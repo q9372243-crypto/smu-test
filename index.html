@@ -214,11 +214,20 @@ textarea{width:100%;min-height:135px;border:1px solid var(--line);border-radius:
     return updateProgressEntry(progress, questionId, current => ({ ...current, note: clean }));
   }
 
+  function mockEligibleQuestions(questions) {
+    return (Array.isArray(questions) ? questions : []).filter(q =>
+      q.answerStatus === 'available' &&
+      q.structureStatus === 'complete' &&
+      !(q.reviewReasons || []).length
+    );
+  }
+
   return {
     TYPES, SCOPES, ORDERS, STUDY_MODES,
     normalizeSettings, filterQuestions, orderedQuestions,
     createSession, restoreSession, canResume, updateSession, completeSession,
     progressEntry, updateProgressEntry, toggleFavorite, setNote,
+    mockEligibleQuestions,
   };
 });
 </script><script>(function () {
@@ -351,7 +360,7 @@ textarea{width:100%;min-height:135px;border:1px solid var(--line);border-radius:
   }
 
   function take(pool, type, count) {
-    return QuizState.orderedQuestions(pool.filter(q => q.type === type && q.outlineTag === '697重点' && q.answerStatus === 'available' && q.structureStatus === 'complete' && !(q.reviewReasons || []).length), 'random').slice(0, count);
+    return QuizState.orderedQuestions(QuizState.mockEligibleQuestions(pool).filter(q => q.type === type), 'random').slice(0, count);
   }
 
   function startMock() {
@@ -366,7 +375,7 @@ textarea{width:100%;min-height:135px;border:1px solid var(--line);border-radius:
       if (got.length < count) shortages.push(`${type} ${got.length}/${count}`);
     }
     if (shortages.length && !confirm(`部分题型不足：${shortages.join('，')}。是否按现有题目组卷？`)) return;
-    const mockSettings = { ...settings, studyMode: 'quiz', scope: 'key', order: 'random', limit: 0 };
+    const mockSettings = { ...settings, studyMode: 'quiz', scope: 'all', order: 'random', limit: 0 };
     const ordered = QuizState.orderedQuestions(picked, 'random');
     activeSession = QuizState.createSession(ordered.map(q => q.id), mockSettings, { dataVersion, isMock: true, mockPoints: points, mockTotal: total });
     activateSession(activeSession);
