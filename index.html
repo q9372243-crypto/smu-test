@@ -1,722 +1,530 @@
 <!doctype html>
-<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>基础医学综合 697 刷题</title>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>考研辅助</title>
 <style>
-:root{--ink:#17324d;--muted:#60758a;--line:#d8e4ef;--blue:#1479d4;--blue2:#eaf4ff;--green:#16895b;--red:#c54848;--gold:#f3a712;--paper:#fff;--bg:#f4f8fb}
-*{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.62 system-ui,-apple-system,"Segoe UI","Microsoft YaHei",sans-serif}
-button,input,select,textarea{font:inherit} button{border:0;border-radius:10px;padding:.72rem 1rem;cursor:pointer;background:var(--blue);color:#fff;font-weight:700}
-button.alt{background:#edf4fa;color:var(--ink)} button.favorite{background:#fff0c7;color:#8a5700} button:disabled{opacity:.5;cursor:not-allowed}
-.wrap{max-width:1080px;margin:auto;padding:22px} .card{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:22px;box-shadow:0 8px 30px rgba(30,70,110,.06)}
-h1{font-size:clamp(1.65rem,4vw,2.35rem);margin:.1rem 0} h3{margin:1.15rem 0 .5rem} .muted{color:var(--muted)} .hidden{display:none!important}
-.subject-tabs,.checks,.toolbar,.nav,.quiz-tools{display:flex;gap:10px;flex-wrap:wrap;align-items:center} .subject-tab{background:#edf4fa;color:var(--ink);border:1px solid var(--line)} .subject-tab.active{background:var(--blue);color:#fff;border-color:var(--blue)}
-.setup-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:18px;margin-top:18px} .panel{border:1px solid var(--line);border-radius:14px;padding:16px} .chapter-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;max-height:330px;overflow:auto}
-.check{display:flex;gap:7px;align-items:flex-start;padding:8px 10px;background:#f7fafc;border-radius:9px} .field-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px} .field label{display:block;color:var(--muted);font-size:.9rem;margin-bottom:3px} select{width:100%;padding:9px;border:1px solid var(--line);border-radius:9px;background:#fff}
-.toolbar{margin-top:18px} .stats{display:flex;gap:9px;flex-wrap:wrap;margin:12px 0 0} .stat{background:#f6f9fc;border-radius:10px;padding:7px 10px}
-.quiz-head{display:flex;justify-content:space-between;gap:12px;align-items:center} .progress{height:9px;background:#dfebf4;border-radius:999px;overflow:hidden;margin:13px 0 18px} .progress i{display:block;height:100%;background:linear-gradient(90deg,var(--blue),#51a9ec)}
-.tags{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:8px} .tag{font-size:.83rem;padding:3px 9px;border-radius:999px;background:#eaf1f7;color:#496277} .tag.key{background:#fff3d8;color:#9a5b00}
-.stem{font-size:1.28rem;font-weight:750;white-space:pre-wrap;margin-top:12px} .option{display:flex;gap:10px;padding:11px 13px;border:1px solid var(--line);border-radius:11px;margin:9px 0;cursor:pointer} .option:hover{background:#f7fbff} .option.chosen{border-color:var(--blue);background:var(--blue2)}
-textarea{width:100%;min-height:135px;border:1px solid var(--line);border-radius:12px;padding:12px;resize:vertical} .actions{margin-top:15px;display:flex;gap:9px;flex-wrap:wrap}
-.note-box{margin:14px 0;border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:#fbfdff} .note-box summary{cursor:pointer;font-weight:700} .note-box textarea{min-height:86px;margin-top:9px} .note-state{float:right;color:var(--green);font-weight:400}
-.feedback{margin-top:18px;border-left:4px solid var(--green);background:#f1fbf6;padding:15px 18px;border-radius:4px 12px 12px 4px} .feedback.bad{border-left-color:var(--red);background:#fff6f6} .answer{font-weight:800} .rationale{padding:9px 0;border-top:1px dashed #bed4c8} .rationale:first-child{border-top:0}
-.notice{border:1px solid #f0cc84;background:#fff8e8;color:#764d00;border-radius:10px;padding:10px 12px} .nav{justify-content:space-between;margin-top:15px}
-.analysis-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap}.analysis-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0}.analysis-tabs button.active{background:var(--blue);color:#fff}.history-list,.subject-overview{display:grid;gap:14px}.record-card,.subject-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:15px}.record-card summary,.subject-card summary{cursor:pointer;list-style:none}.record-card summary::-webkit-details-marker,.subject-card summary::-webkit-details-marker{display:none}.record-title{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.record-title b{font-size:1.05rem}.accuracy{font-size:1.35rem;font-weight:850;color:var(--green);white-space:nowrap}.accuracy.muted-score{color:var(--muted);font-size:1rem}.analysis-metrics{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}.analysis-metric{padding:5px 9px;border-radius:999px;background:#eef4f8;font-size:.88rem}.analysis-metric.good{background:#e8f8ef;color:#106b44}.analysis-metric.bad{background:#fff0f0;color:#a63030}.analysis-metric.partial{background:#fff7e7;color:#9a6200}.analysis-detail{display:grid;grid-template-columns:150px 1fr;gap:16px;align-items:center;margin-top:14px;border-top:1px solid var(--line);padding-top:14px}.donut{--correct:0%;--wrong:0%;--partial:0%;width:132px;height:132px;border-radius:50%;background:conic-gradient(var(--green) 0 var(--correct),var(--red) var(--correct) calc(var(--correct) + var(--wrong)),var(--gold) calc(var(--correct) + var(--wrong)) calc(var(--correct) + var(--wrong) + var(--partial)),#d9e5ee calc(var(--correct) + var(--wrong) + var(--partial)) 100%);position:relative}.donut:after{content:'';position:absolute;inset:25px;border-radius:50%;background:#fff}.donut-label{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.25;font-weight:850;z-index:1}.chapter-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center;padding:11px 0;border-top:1px solid #e7eef4}.chapter-row:first-child{border-top:0}.mini-bar{height:7px;background:#e4edf4;border-radius:99px;overflow:hidden;margin-top:5px}.mini-bar i{display:block;height:100%;background:var(--blue);border-radius:inherit}.mastery{font-size:.83rem;padding:3px 8px;border-radius:999px;background:#edf3f7;color:#50687c;white-space:nowrap}.mastery.weak{background:#fff0f0;color:#aa3434}.mastery.revise{background:#fff6df;color:#916000}.mastery.good{background:#e9f8ef;color:#176b49}.empty-analysis{text-align:center;padding:38px 14px;border:1px dashed #c4d6e4;border-radius:14px;color:var(--muted)}.completion-card{text-align:center;max-width:650px;margin:8vh auto}.completion-card h2{margin-top:0}
-@media(max-width:760px){.wrap{padding:10px}.card{padding:15px;border-radius:13px}.setup-grid{grid-template-columns:1fr}.chapter-list{grid-template-columns:1fr}.subject-tabs{display:grid;grid-template-columns:1fr 1fr}.subject-tab{padding:.65rem .4rem}.field-grid{grid-template-columns:1fr}.analysis-detail{grid-template-columns:1fr}.donut{margin:auto}.record-title{display:block}.accuracy{margin-top:6px}}
-</style></head><body><main class="wrap">
-<section id="setup" class="card">
-  <h1>基础医学综合 697 刷题</h1>
-  <p class="muted">选择一科后只显示该科章节。页面会记住上次筛选、未完成进度、错题、收藏与笔记；记录仅保存在当前浏览器。</p>
-  <h3>1. 选择科目</h3><div class="subject-tabs"><button class="subject-tab" data-subject="生理学">生理学</button><button class="subject-tab" data-subject="生物化学与分子生物学">生物化学与分子生物学</button><button class="subject-tab" data-subject="病理学">病理学</button><button class="subject-tab" data-subject="病理生理学">病理生理学</button><button class="subject-tab" data-subject="医学免疫学">医学免疫学</button><button class="subject-tab" data-subject="医学微生物学">医学微生物学</button></div>
-  <div class="setup-grid">
-    <div class="panel"><div class="quiz-head"><h3>2. 选择章节</h3><button class="alt" id="toggleChapters">全不选</button></div><div id="chapters" class="chapter-list"></div></div>
-    <div class="panel">
-      <h3>3. 筛选题型</h3><div class="checks"><label class="check"><input type="checkbox" name="qtype" value="选择题"> 选择题</label><label class="check"><input type="checkbox" name="qtype" value="名词解释"> 名词解释</label><label class="check"><input type="checkbox" name="qtype" value="简答题"> 简答题</label><label class="check"><input type="checkbox" name="qtype" value="问答题"> 问答题</label></div>
-      <h3>4. 刷题设置</h3>
-      <div class="field-grid">
-        <div class="field"><label for="scope">刷题范围</label><select id="scope"><option value="all">全部题目</option><option value="unseen">未做题</option><option value="wrong">错题</option><option value="favorite">收藏题</option><option value="note">笔记题</option><option value="key">697重点</option></select></div>
-        <div class="field"><label for="order">出题顺序</label><select id="order"><option value="sequential">顺序出题</option><option value="random">随机出题</option></select></div>
-        <div class="field"><label for="studyMode">显示答案</label><select id="studyMode"><option value="quiz">刷题模式</option><option value="study">背题模式</option></select></div>
-        <div class="field"><label for="limit">抽题数量</label><select id="limit"><option value="30">30 题</option><option value="50">50 题</option><option value="100">100 题</option><option value="0">全部</option></select></div>
-      </div>
-      <div class="stats" id="setupStats"></div>
-    </div>
-  </div>
-  <div class="toolbar"><button id="resumeBtn" class="hidden">继续上次未完成</button><button id="startBtn">重新开始当前筛选</button><button class="alt" id="mockBtn">697 综合模拟（300分）</button><button class="alt" id="analysisBtn">刷题记录 / 学习分析</button><button class="alt" id="resetBtn">清除本机记录</button></div>
-</section>
-<section id="quiz" class="hidden">
-  <div class="card">
-    <div class="quiz-head"><strong id="counter"></strong><span class="muted" id="score"></span></div><div class="progress"><i id="bar"></i></div>
-    <div class="quiz-head"><div class="tags" id="tags"></div><div class="quiz-tools"><button class="alt" id="favoriteBtn">☆ 收藏此题</button></div></div>
-    <div class="stem" id="stem"></div><div id="options"></div><textarea id="written" class="hidden" placeholder="在这里作答（仅保存在当前浏览器）"></textarea>
-    <details class="note-box"><summary>本题笔记 <span class="note-state" id="noteState"></span></summary><textarea id="questionNote" placeholder="记录易错点、口诀或复习提醒，输入后自动保存"></textarea></details>
-    <div class="actions" id="actions"></div><div id="feedback" class="feedback hidden"></div>
-  </div>
-  <div class="nav"><button class="alt" id="prevBtn">上一题</button><button class="alt" id="backBtn">返回筛选</button><button id="nextBtn">下一题</button></div>
-</section>
-<section id="completion" class="hidden"><div class="card completion-card"><h2>本轮刷题已保存</h2><p class="muted" id="completionSummary"></p><div class="toolbar" style="justify-content:center"><button id="viewCompletedAnalysis">查看本次分析</button><button class="alt" id="completionBack">返回刷题设置</button></div></div></section>
-<section id="analysis" class="hidden"><div class="card"><div class="analysis-head"><div><h2 style="margin:.1rem 0">刷题记录与学习分析</h2><p class="muted">仅统计本次更新后完成的刷题记录；旧进度不会参与本页分析。</p></div><button class="alt" id="analysisBack">返回刷题设置</button></div><div class="analysis-tabs"><button class="active" id="historyTab">单次记录</button><button class="alt" id="overviewTab">科目总览</button><button class="alt" id="clearHistoryBtn">清除分析记录</button></div><div id="historyView"><div id="historyList" class="history-list"></div></div><div id="overviewView" class="hidden"><div id="subjectOverview" class="subject-overview"></div></div></div></section>
-</main><script src="questions.js"></script><script src="quiz-history.js"></script><script src="quiz-sessions.js"></script><script>(function (root, factory) {
-  const api = factory();
-  if (typeof module === 'object' && module.exports) module.exports = api;
-  else root.QuizState = api;
-})(typeof globalThis !== 'undefined' ? globalThis : this, function () {
-  'use strict';
+:root{--bg:#f5f7f5;--panel:#fff;--panel2:#f0f4f1;--text:#26352d;--muted:#718078;--line:#dde6df;--accent:#547b68;--accent2:#e2eee6;--gold:#b58b50;--red:#a76663;--blue:#6b8496;--shadow:0 10px 32px #243b2b0b}
+[data-theme=dark]{--bg:#151c19;--panel:#202a24;--panel2:#29372f;--text:#e9f0eb;--muted:#a2b2a6;--line:#36453b;--accent:#8eb9a0;--accent2:#334b3d;--gold:#d5b277;--red:#dc9894;--blue:#98b2c3;--shadow:0 10px 32px #0003}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.55 system-ui,-apple-system,"Segoe UI","Microsoft YaHei",sans-serif}button,input,select,textarea{font:inherit}button{cursor:pointer}button:disabled{opacity:.45;cursor:not-allowed}a{color:var(--accent)}.app{display:grid;grid-template-columns:224px minmax(0,1fr);min-height:100vh}.side{position:sticky;top:0;height:100vh;padding:26px 16px;border-right:1px solid var(--line);background:var(--panel)}.brand{font-size:19px;font-weight:800;letter-spacing:.02em;margin:0 10px 8px}.brand small{display:block;color:var(--muted);font-size:11px;font-weight:500;letter-spacing:.08em}.nav{display:grid;gap:4px;margin-top:28px}.nav button{border:0;background:transparent;color:var(--muted);text-align:left;padding:12px 14px;border-radius:11px}.nav button:hover,.nav button.active{background:var(--accent2);color:var(--accent);font-weight:700}.sidefoot{position:absolute;bottom:22px;left:26px;right:26px;color:var(--muted);font-size:12px}.main{max-width:1500px;width:100%;margin:auto;padding:30px 42px 80px}.topline{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:25px}.eyebrow{font-size:12px;font-weight:700;letter-spacing:.12em;color:var(--accent);text-transform:uppercase}h1{font-size:29px;letter-spacing:-.03em;margin:5px 0 2px}h2{font-size:19px;margin:0}h3{font-size:15px;margin:0 0 10px}.sub{color:var(--muted);font-size:13px}.toptools{display:flex;gap:8px}.btn,.iconbtn{border:1px solid var(--line);background:var(--panel);color:var(--text);padding:9px 13px;border-radius:9px}.btn:hover,.iconbtn:hover{border-color:var(--accent)}.btn.primary{background:var(--accent);color:var(--panel);border-color:var(--accent)}.btn.soft{background:var(--accent2);color:var(--accent);border-color:transparent}.btn.danger{color:var(--red)}.btn.sm{padding:5px 9px;font-size:12px}.grid{display:grid;gap:17px}.stats{grid-template-columns:repeat(6,minmax(0,1fr));margin-bottom:18px}.card{background:var(--panel);border:1px solid var(--line);border-radius:15px;box-shadow:var(--shadow)}.stat{padding:18px}.stat .k{color:var(--muted);font-size:12px}.stat strong{display:block;font-size:22px;line-height:1.2;margin-top:9px}.stat small{font-size:12px;color:var(--muted)}.cols{grid-template-columns:minmax(0,1.65fr) minmax(300px,1fr);align-items:start}.section{padding:22px}.sectionhead{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:15px}.sectionhead p{margin:4px 0 0;color:var(--muted);font-size:13px}.actions{display:flex;gap:8px;flex-wrap:wrap}.task{display:grid;grid-template-columns:24px minmax(0,1fr) auto;gap:12px;align-items:start;padding:14px 0;border-top:1px solid var(--line)}.task:first-child{border-top:0}.task input[type=checkbox]{width:18px;height:18px;accent-color:var(--accent);margin-top:4px}.task.done .tasktitle{text-decoration:line-through;color:var(--muted)}.tasktitle{font-weight:650}.taskmeta{font-size:12px;color:var(--muted);margin-top:5px}.taskops{display:flex;gap:5px;align-items:center}.drag{cursor:grab;color:var(--muted);padding:4px}.task[draggable=true].dragging{opacity:.45}.badge{display:inline-block;border-radius:99px;padding:2px 8px;font-size:11px;font-weight:700;background:var(--panel2);color:var(--accent);margin-right:5px}.badge.warn{color:var(--gold)}.badge.hot{color:var(--red)}.progress{height:9px;background:var(--panel2);border-radius:99px;overflow:hidden}.progress>span{display:block;height:100%;background:var(--accent);border-radius:99px}.progress.gold>span{background:var(--gold)}.progress.blue>span{background:var(--blue)}.row{display:flex;align-items:center;justify-content:space-between;gap:12px}.muted{color:var(--muted)}.mini-list{display:grid;gap:10px}.mini-item{padding:11px 12px;background:var(--panel2);border-radius:10px}.mini-item strong{display:block;font-size:13px}.mini-item small{color:var(--muted)}.empty{padding:30px 12px;text-align:center;color:var(--muted);background:var(--panel2);border-radius:10px}.calendarbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:17px}.calendarbar h2{min-width:140px;text-align:center}.calgrid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:7px}.weekday{text-align:center;color:var(--muted);font-size:12px;padding:4px}.day{min-height:98px;border:1px solid var(--line);background:var(--panel);border-radius:10px;text-align:left;padding:9px;color:var(--text)}.day:hover,.day.selected{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}.day.today{background:var(--accent2)}.day.out{opacity:.3}.day .num{font-weight:700}.day .line{font-size:11px;color:var(--muted);margin-top:6px;line-height:1.35}.day .tick{color:var(--accent);font-weight:800}.day .dots{display:flex;gap:3px;margin-top:8px}.dot{height:5px;width:20px;border-radius:4px;background:var(--line)}.dot.filled{background:var(--accent)}.cal-layout{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(300px,1fr);gap:18px}.formrow{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.field{display:grid;gap:5px;margin-bottom:12px}.field label{font-size:12px;color:var(--muted);font-weight:650}.field input,.field select,.field textarea,.inlineinput{width:100%;border:1px solid var(--line);border-radius:8px;padding:9px 10px;background:var(--panel);color:var(--text);outline:0}.field textarea{min-height:88px;resize:vertical}.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--accent)}.chapters{display:grid;gap:10px}.chapter{display:grid;grid-template-columns:minmax(0,1fr) 160px;align-items:center;gap:12px;padding:11px 13px;background:var(--panel2);border-radius:9px}.chapter select{max-width:160px}.qfilters{display:flex;flex-wrap:wrap;gap:7px;margin:16px 0}.qfilters button.active{background:var(--accent2);color:var(--accent);border-color:var(--accent)}.qcard{padding:18px;margin-bottom:12px}.qcard h3{margin:6px 0}.qcard .qmeta{font-size:12px;color:var(--muted)}.qcard details{margin-top:10px}.qcard summary{cursor:pointer;color:var(--accent)}.qcard textarea{min-height:100px}.qcard .rating{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}.stars{color:var(--gold)}.chart{display:flex;align-items:end;gap:12px;height:190px;border-bottom:1px solid var(--line);padding:0 4px}.chartcol{flex:1;min-width:0;text-align:center;height:100%;display:flex;flex-direction:column;justify-content:end}.chartbars{display:flex;align-items:end;justify-content:center;gap:3px;height:145px}.bar{width:15px;max-width:44%;border-radius:5px 5px 0 0;min-height:2px;background:var(--accent)}.bar.alt{background:var(--gold)}.chartcol small{color:var(--muted);font-size:11px;margin-top:5px}.legend{display:flex;gap:16px;color:var(--muted);font-size:12px;margin-top:12px}.legend i{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:5px;background:var(--accent)}.legend i.alt{background:var(--gold)}.toast{position:fixed;bottom:22px;right:22px;background:var(--text);color:var(--panel);padding:10px 16px;border-radius:9px;box-shadow:var(--shadow);z-index:30}.modalback{position:fixed;inset:0;background:#14201999;display:grid;place-items:center;padding:18px;z-index:20}.modal{width:min(560px,100%);max-height:90vh;overflow:auto;background:var(--panel);padding:22px;border-radius:16px;box-shadow:0 22px 80px #0004}.modal h2{margin-bottom:15px}.note{background:var(--panel2);border-left:3px solid var(--accent);padding:10px 12px;border-radius:6px;color:var(--muted);font-size:12px}.subject-hero{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px}.subject-hero .card{padding:16px}.footer{font-size:12px;color:var(--muted);margin-top:20px}.hidden{display:none!important}
+@media(max-width:1100px){.stats{grid-template-columns:repeat(3,1fr)}.cols,.cal-layout{grid-template-columns:1fr}.main{padding:24px}.side{width:190px}.app{grid-template-columns:190px 1fr}}@media(max-width:720px){.app{display:block}.side{position:sticky;z-index:10;top:0;width:auto;height:auto;padding:9px 12px;border-right:0;border-bottom:1px solid var(--line)}.brand,.sidefoot{display:none}.nav{display:flex;overflow:auto;margin:0;gap:3px}.nav button{white-space:nowrap;padding:8px 10px;font-size:12px}.main{padding:20px 12px 60px}.topline{align-items:center}h1{font-size:23px}.stats{grid-template-columns:repeat(2,1fr);gap:8px}.stat{padding:12px}.stat strong{font-size:19px}.section{padding:16px}.day{min-height:66px;padding:5px}.day .line{display:none}.day .dots{margin-top:8px}.calgrid{gap:3px}.formrow,.subject-hero{grid-template-columns:1fr}.chapter{grid-template-columns:1fr}.task{grid-template-columns:20px minmax(0,1fr)}.taskops{grid-column:2}.toptools{gap:4px}.toptools .btn{font-size:12px;padding:7px}}
+.outline{display:grid;gap:12px}.partfold{border:1px solid var(--line);border-radius:11px;background:var(--panel2)}.parttitle{cursor:pointer;padding:13px 15px;font-weight:750;list-style-position:inside}.partbody{padding:0 10px 10px}.chaptertree{background:var(--panel);border:1px solid var(--line);border-radius:9px;margin:7px 0}.chapterrow{display:grid;grid-template-columns:minmax(0,1fr) 155px;gap:12px;align-items:start;padding:10px 12px}.moduleline select{width:100%;border:1px solid var(--line);border-radius:7px;padding:6px;background:var(--panel);color:var(--text)}.chapterrow summary{cursor:pointer}.modulelist{display:grid;gap:7px;margin:12px 0 3px 11px}.moduleline{display:grid;grid-template-columns:minmax(0,1fr) 142px;gap:7px;align-items:center;padding:7px 9px;border-radius:7px;background:var(--panel2)}.moduleline span{min-width:0}.moduleline button{padding:2px 6px}@media(max-width:720px){.chapterrow{grid-template-columns:1fr}.moduleline{grid-template-columns:minmax(0,1fr) 122px}}
+.legacyfold{margin-top:8px;padding:8px;border-top:1px solid var(--line)}.legacyfold summary{cursor:pointer}.parttitle{padding:13px 15px;font-weight:750}
+</style>
+</head>
+<body>
+<div class="app"><aside class="side"><div class="brand">考研辅助<small>2027 · 648 生物医学综合</small></div><nav class="nav" id="nav"></nav><div class="sidefoot">每天看得见的进步<br>数据仅保存在当前浏览器</div></aside><main class="main"><div class="topline"><div><div class="eyebrow" id="pageEyebrow"></div><h1 id="pageTitle"></h1><div class="sub" id="pageSub"></div></div><div class="toptools"><button class="btn" id="themeBtn" title="切换明暗">◐ 主题</button></div></div><div id="view"></div></main></div>
+<div id="modalRoot"></div><div id="toast" class="toast hidden" role="status"></div><input id="importInput" type="file" accept="application/json,.json" class="hidden"><input id="questionImportInput" type="file" accept="application/json,.json" class="hidden">
+<script>
+'use strict';
+/* 单文件离线应用：所有状态通过一个带版本号的数据对象存入 localStorage。 */
+const KEY='sysu648-planner-v1', START='2026-10-05', DEFAULT_EXAM='2026-12-19';
+const SUBJECTS={phys:'生理学',bio:'生物化学与分子生物学',cell:'医学细胞生物学'};
+const EDITION={phys:'科学出版社第5版 · 信文君、肖中举',bio:'人民卫生出版社第10版 · 高国全、汤其群',cell:'人民卫生出版社第6版 · 陈誉华、陈志南'};
+const SHORT={phys:'生理',bio:'生化',cell:'细胞'};
+const STATUS=['未开始','第一轮','第二轮','能口述','能完整书写','已掌握'];
+const MASTERY=['不会','有印象','能口述','能完整书写','熟练'];
+const V2_CHAPTERS={
+ phys:['绪论','细胞的基本功能','血液','血液循环','呼吸生理','消化与吸收','能量代谢和体温','尿的生成和排出','感觉器官','神经系统','内分泌系统','生殖'],
+ bio:['蛋白质的结构与功能','酶与酶促反应','核酸的结构与功能','糖蛋白和蛋白聚糖','水和无机元素','维生素','糖代谢','生物氧化','脂质代谢','氨基酸代谢','核苷酸代谢','代谢整合与调节','真核基因与基因组','DNA生物合成','RNA生物合成','蛋白质生物合成','基因表达调控','分子生物学技术','重组DNA技术','分子医学与疾病基因','细胞信号转导','肿瘤生化','DNA损伤与修复','基因诊断与治疗','肝生化','血液生化','其他组织器官生化'],
+ cell:['绪论','细胞的概念与分子基础','研究方法','细胞膜与跨膜运输','内膜系统与囊泡转运','线粒体','细胞骨架','细胞核','遗传信息传递与调控','细胞连接与黏附','细胞微环境','细胞间信息传递','细胞分裂与细胞周期','生殖细胞与受精','细胞分化','细胞衰老与死亡','干细胞','细胞工程']
+};
+/* 篇是便于复习的学习分组；知识模块是可编辑的复习要点，不冒充教材原小节。 */
+const V2_PARTS={
+ phys:[['第一篇 生理学基础',0,2],['第二篇 器官与系统生理',3,8],['第三篇 神经、内分泌与生殖',9,11]],
+ bio:[['第一篇 生物分子与基础',0,5],['第二篇 物质代谢与调节',6,11],['第三篇 遗传信息与分子技术',12,20],['第四篇 疾病与器官生化',21,26]],
+ cell:[['第一篇 细胞基础与研究方法',0,2],['第二篇 细胞结构与功能',3,11],['第三篇 细胞生命活动与应用',12,17]]
+};
+const V2_MODULES={
+ phys:[
+  ['研究对象与方法','内环境与稳态'],['细胞膜物质转运','细胞生物电','骨骼肌收缩'],['血细胞','止血与凝血','血型与输血'],['心肌生物电','心动周期','动脉血压及调节','微循环'],['肺通气','肺换气','气体运输','呼吸调节'],['消化液分泌','胃肠运动','营养物质吸收'],['能量代谢','体温调节'],['肾小球滤过','肾小管重吸收与分泌','尿浓缩与稀释','排尿'],['视觉','听觉','前庭感觉'],['神经元与突触','感觉传导','运动控制','高级神经功能'],['下丘脑与垂体','甲状腺','肾上腺','胰岛'],['男性生殖','女性生殖','妊娠与泌乳']
+ ],
+ bio:[
+  ['氨基酸与肽键','蛋白质各级结构','结构与功能'],['酶活性与动力学','抑制剂与酶调控'],['DNA结构','RNA结构与功能'],['糖蛋白','蛋白聚糖'],['体液与水代谢','电解质和酸碱平衡'],['脂溶性维生素','水溶性维生素'],['糖酵解','糖异生','糖原代谢','磷酸戊糖途径'],['呼吸链','氧化磷酸化','活性氧'],['脂肪酸代谢','甘油三酯代谢','胆固醇代谢','血浆脂蛋白'],['氨基酸分解','尿素循环','一碳单位'],['嘌呤核苷酸代谢','嘧啶核苷酸代谢'],['能量状态与代谢调控','器官间代谢协同'],['真核基因结构','基因组结构'],['复制酶与复制过程','端粒与端粒酶'],['转录过程','RNA加工','逆转录'],['翻译过程','翻译后修饰'],['原核基因表达调控','真核基因表达调控','表观遗传调控'],['PCR','核酸测序','印迹技术'],['克隆载体','重组DNA操作步骤'],['遗传病分子机制','疾病基因定位'],['受体与第二信使','信号级联','信号终止与交叉'],['癌基因与抑癌基因','肿瘤代谢'],['DNA损伤类型','切除修复','双链断裂修复'],['基因检测','基因治疗'],['胆红素代谢','胆汁酸代谢','生物转化'],['血浆蛋白','红细胞代谢','血红素代谢'],['肌肉组织代谢','神经组织代谢','其他器官代谢']
+ ],
+ cell:[
+  ['学科发展','研究范围'],['细胞基本概念','细胞的分子组成'],['显微镜与成像','细胞分离与培养','分子标记技术'],['膜脂与膜蛋白','跨膜运输','胞吞与胞吐'],['内质网','高尔基体','溶酶体','过氧化物酶体','囊泡转运','蛋白质分选'],['线粒体结构','氧化磷酸化','线粒体遗传与凋亡'],['微丝','微管','中间丝','细胞运动与形态'],['核膜与核孔','核仁','染色质与染色体'],['DNA复制','转录与翻译','表观遗传调控'],['紧密连接','黏着连接','间隙连接'],['细胞外基质组成','细胞与基质相互作用'],['受体类型','第二信使','信号级联'],['有丝分裂','减数分裂','细胞周期调控','检查点'],['配子形成','受精过程'],['细胞命运决定','分化调控'],['细胞衰老机制','细胞凋亡','自噬与坏死'],['干细胞特性','干细胞分化与应用'],['细胞培养','克隆与重编程','组织工程']
+ ]
+};
+/* 指定教材目录。空数组仅用于尚待原书目录核验的章节，不生成推测的节名。 */
+const OUTLINE={
+ phys:[
+  ['绪论',['生理学的研究对象','内环境及其稳态','生命活动的基本特征','人体功能的调节','人体的控制系统']],
+  ['细胞的基本功能',['细胞膜的基本结构和物质转运功能','细胞的信号转导','生物电现象和兴奋性','肌细胞的收缩']],
+  ['血液',['血液的组成和理化特性','血细胞生理','生理性止血','血型与输血']],
+  ['血液循环',['心脏的电活动','心脏的泵血功能','血管生理','心血管活动的调节','器官循环']],
+  ['呼吸生理',['肺通气','呼吸气体的交换','气体在血液中的运输','节律性呼吸的调控']],
+  ['消化与吸收',['概述','口腔内消化','胃内消化','小肠内消化','大肠内消化','吸收']],
+  ['能量代谢和体温',['能量代谢','体温及其调节']],
+  ['尿的生成和排出',['肾脏的结构与血液循环特点','尿的生成过程','尿液的浓缩和稀释','肾脏泌尿功能的调节','血浆清除率','尿的排出']],
+  ['感觉器官',['概述','视觉器官','听觉器官','前庭器官','嗅觉与味觉','皮肤感觉']],
+  ['神经系统',['神经元与神经胶质细胞','神经元间的信息传递','神经系统的感觉功能','神经系统对躯体运动的调节','神经系统对内脏活动的调节','脑的高级功能']],
+  ['内分泌系统',['概论','下丘脑和垂体的内分泌功能','甲状腺的内分泌','甲状旁腺、甲状腺C细胞的内分泌及维生素D3','胰腺的内分泌','肾上腺的内分泌功能','其他器官的内分泌功能及激素']],
+  ['生殖',['男性生殖','女性生殖','妊娠']]
+ ],
+ bio:[
+  ['蛋白质的结构与功能',['蛋白质的分子组成','蛋白质的分子结构','蛋白质结构与功能的关系','蛋白质的理化性质','蛋白质的分离、纯化与结构分析']],
+  ['酶与酶促反应',['酶的分子结构与功能','酶的工作原理','酶促反应动力学','酶的调节','酶的分类与命名','酶在医学中的应用']],
+  ['核酸的结构与功能',['核酸的化学组成及其一级结构','DNA的空间结构与功能','RNA的空间结构与功能','核酸的理化性质']],
+  ['糖蛋白和蛋白聚糖的结构与功能',['糖蛋白分子中的聚糖','蛋白聚糖分子中的糖胺聚糖','聚糖结构蕴藏大量生物信息']],
+  ['水和无机元素',['水','无机元素']],
+  ['维生素',['脂溶性维生素','水溶性维生素']],
+  ['糖代谢',['糖的摄取与利用','糖的无氧氧化','糖的有氧氧化','戊糖磷酸途径','糖原的合成与分解','糖异生','葡萄糖的其他代谢途径','血糖及其调节']],
+  ['脂质代谢',['脂质的构成、功能及分析','脂质的消化与吸收','甘油三酯代谢','磷脂代谢','胆固醇代谢','血浆脂蛋白及其代谢']],
+  ['氨基酸代谢',['营养必需氨基酸与氨基酸代谢概述','氨基酸的一般代谢','氨的代谢','个别氨基酸的代谢']],
+  ['生物氧化',['生物氧化与能量代谢','线粒体氧化体系与氧化呼吸链','氧化磷酸化与ATP的生成','氧化磷酸化的影响因素','其他氧化与抗氧化体系']],
+  ['核苷酸代谢',['核苷酸代谢概述','嘌呤核苷酸的合成与分解代谢','嘧啶核苷酸的合成与分解代谢']],
+  ['代谢的整合与调节',['代谢的特点','代谢的相互联系','代谢调节的主要方式']],
+  ['真核基因与基因组',['真核基因的结构与功能','真核基因组的结构与功能','基因组学']],
+  ['DNA的合成',['DNA复制的基本规律','DNA复制的酶学和拓扑学','原核生物DNA复制过程','真核生物DNA复制过程','逆转录']],
+  ['RNA的生物合成',['RNA的生物合成概述','原核生物的转录','真核生物mRNA的转录、加工和降解','真核生物非编码RNA的生物合成']],
+  ['蛋白质的合成',['蛋白质合成体系','肽链的合成过程','蛋白质合成后的加工和靶向输送','蛋白质合成的干扰和抑制']],
+  ['基因表达调控',['基因表达调控的基本概念与特点','原核基因表达调控','真核基因表达调控']],
+  ['常用的分子生物学技术',['印迹法和探针技术','聚合酶链反应技术','DNA测序技术','生物分子相互作用研究技术','基因表达分析技术']],
+  ['DNA重组和重组DNA技术',['自然界的DNA重组和基因转移','重组DNA技术','重组DNA技术在医学中的应用']],
+  ['细胞信号转导与疾病',['细胞信号转导概述','细胞内信号转导分子','细胞受体介导的细胞内信号转导','细胞信号转导的基本规律','细胞信号转导异常与疾病']],
+  ['DNA损伤和损伤修复',['DNA损伤','DNA损伤修复','DNA损伤和损伤修复的意义']],
+  ['疾病相关基因',['疾病相关基因及其鉴定原则','疾病相关基因鉴定的方法','疾病相关基因与分子医学']],
+  ['癌症的分子基础',['癌症分子基础概述','癌基因','抑癌基因']],
+  ['基因诊断和基因治疗',['基因诊断','基因治疗']],
+  ['肝的生物化学',['肝在物质代谢中的作用','肝的生物转化作用','胆汁与胆汁酸的代谢','胆色素的代谢与黄疸']],
+  ['血液的生物化学',['血浆蛋白质','血红素的合成','血细胞物质代谢']],
+  ['其他重要器官和组织的生物化学',['脑的生物化学','心肌的生物化学','肾的生物化学','骨骼肌的生物化学','脂肪组织的生物化学']]
+ ],
+ cell:[
+  ['绪论',['细胞生物学概述','细胞生物学的形成与发展趋势','细胞生物学与医学']],
+  ['细胞的概念与分子基础',['细胞的基本概念','细胞的分子基础','细胞的起源与进化']],
+  ['细胞生物学的研究方法',['显微镜技术','细胞的分离和培养','细胞组分的分离和纯化技术','细胞化学和细胞内分子示踪技术','细胞功能基因组学研究技术']],
+  ['细胞膜与物质的穿膜运输',['细胞膜的化学组成与生物学特性','小分子物质和离子的穿膜运输','大分子和颗粒物质的穿膜运输','细胞膜异常与疾病']],
+  ['细胞的内膜系统与囊泡转运',['内质网','高尔基复合体','溶酶体','过氧化物酶体','囊泡与囊泡转运','细胞内膜系统与医学的关系']],
+  ['线粒体与细胞的能量转换',['线粒体的基本特征','细胞呼吸与能量转换','线粒体与疾病']],
+  ['细胞骨架与细胞的运动',['微管','微丝','中间纤维','细胞的运动','细胞骨架与疾病']],
+  ['细胞核',['核膜','染色质与染色体','核仁','核基质','细胞核的功能','细胞核与疾病']],
+  ['细胞内遗传信息的传递及调控',['基因及其结构','基因转录和转录后加工','蛋白质的生物合成','基因表达的调控','基因的信息传递与医学']],
+  ['细胞连接与细胞黏附',['细胞连接','细胞黏附']],
+  ['细胞微环境及其与细胞的相互作用',['细胞微环境的组成','细胞外基质的主要组成成分','细胞微环境与细胞间的相互作用','细胞微环境异常与疾病']],
+  ['细胞间信息传递',['细胞间信息传递的方式和途径','细胞的信号转导及其关键分子','细胞的主要信号转导通路','细胞信号转导通路的整合与调控','细胞间信息传递障碍与疾病']],
+  ['细胞分裂与细胞周期',['细胞分裂','细胞周期及其调控','细胞周期与医学的关系']],
+  ['生殖细胞与受精',['生殖细胞的起源与发生','受精与医学']],
+  ['细胞分化',['细胞分化的基本概念','细胞分化的分子基础','细胞分化的影响因素','细胞分化与医学']],
+  ['细胞衰老与细胞死亡',['细胞衰老','细胞死亡','细胞自噬']],
+  ['干细胞与组织的维持和再生',['干细胞概述','胚胎干细胞','组织干细胞','干细胞与医学']],
+  ['细胞工程',['细胞工程的主要相关技术','细胞工程的应用']]
+ ]
+};
 
-  const TYPES = ['选择题', '名词解释', '简答题', '问答题'];
-  const SCOPES = ['all', 'unseen', 'wrong', 'favorite', 'note', 'key'];
-  const ORDERS = ['sequential', 'random'];
-  const STUDY_MODES = ['quiz', 'study'];
-  const LIMITS = [0, 30, 50, 100];
 
-  function asObject(value) {
-    return value && typeof value === 'object' && !Array.isArray(value) ? value : {};
-  }
-
-  function unique(values) {
-    return [...new Set(values)];
-  }
-
-  function normalizeSettings(raw, questions) {
-    raw = asObject(raw);
-    questions = Array.isArray(questions) ? questions : [];
-    const subjects = unique(questions.map(q => q.subject).filter(Boolean));
-    const defaultSubject = subjects.includes('生理学') ? '生理学' : (subjects[0] || '生理学');
-    const subject = subjects.includes(raw.subject) ? raw.subject : defaultSubject;
-    const availableChapters = unique(questions.filter(q => q.subject === subject).map(q => q.chapter).filter(Boolean));
-    const hasChapterSelection = Array.isArray(raw.chapters);
-    const requestedChapters = hasChapterSelection ? raw.chapters : [];
-    const validChapters = requestedChapters.filter(chapter => availableChapters.includes(chapter));
-    const chapters = hasChapterSelection && requestedChapters.length === 0 ? [] : (validChapters.length ? unique(validChapters) : availableChapters);
-    const hasTypeSelection = Array.isArray(raw.types);
-    const requestedTypes = hasTypeSelection ? raw.types : [];
-    const validTypes = requestedTypes.filter(type => TYPES.includes(type));
-    const types = hasTypeSelection && requestedTypes.length === 0 ? [] : (validTypes.length ? unique(validTypes) : [...TYPES]);
-    const limit = LIMITS.includes(Number(raw.limit)) ? Number(raw.limit) : 30;
-    return {
-      subject,
-      chapters,
-      types,
-      scope: SCOPES.includes(raw.scope) ? raw.scope : 'all',
-      order: ORDERS.includes(raw.order) ? raw.order : 'sequential',
-      studyMode: STUDY_MODES.includes(raw.studyMode) ? raw.studyMode : 'quiz',
-      limit,
-    };
-  }
-
-  function filterQuestions(questions, settings, progress) {
-    questions = Array.isArray(questions) ? questions : [];
-    settings = asObject(settings);
-    progress = asObject(progress);
-    const chapters = new Set(Array.isArray(settings.chapters) ? settings.chapters : []);
-    const types = new Set(Array.isArray(settings.types) ? settings.types : []);
-    return questions.filter(q => {
-      if (q.subject !== settings.subject || !chapters.has(q.chapter) || !types.has(q.type)) return false;
-      const state = asObject(progress[q.id]);
-      switch (settings.scope) {
-        case 'unseen': return !(Number(state.attempts) > 0);
-        case 'wrong': return Number(state.wrong) > 0;
-        case 'favorite': return state.favorite === true;
-        case 'note': return typeof state.note === 'string' && state.note.trim().length > 0;
-        case 'key': return q.outlineTag === '697重点';
-        default: return true;
-      }
-    });
-  }
-
-  function orderedQuestions(questions, order, random) {
-    const result = Array.isArray(questions) ? [...questions] : [];
-    if (order !== 'random') return result;
-    random = typeof random === 'function' ? random : Math.random;
-    for (let i = result.length - 1; i > 0; i -= 1) {
-      const j = Math.floor(random() * (i + 1));
-      [result[i], result[j]] = [result[j], result[i]];
-    }
-    return result;
-  }
-
-  function createSession(questionIds, settings, options) {
-    options = asObject(options);
-    const now = Number.isFinite(options.now) ? options.now : Date.now();
-    return {
-      id: String(options.id || `session-${now}-${Math.random().toString(36).slice(2, 9)}`),
-      startedAt: Number.isFinite(options.startedAt) ? options.startedAt : now,
-      dataVersion: String(options.dataVersion || ''),
-      questionIds: unique((Array.isArray(questionIds) ? questionIds : []).filter(Boolean)),
-      index: 0,
-      answers: {},
-      settings: { ...asObject(settings) },
-      isMock: options.isMock === true,
-      mockPoints: { ...asObject(options.mockPoints) },
-      mockTotal: Number(options.mockTotal) || 0,
-      completed: false,
-      createdAt: now,
-      updatedAt: now,
-    };
-  }
-
-  function restoreSession(raw, questions, dataVersion) {
-    raw = asObject(raw);
-    if (raw.completed === true || String(raw.dataVersion || '') !== String(dataVersion || '')) return null;
-    const validIds = new Set((Array.isArray(questions) ? questions : []).map(q => q.id));
-    const questionIds = unique((Array.isArray(raw.questionIds) ? raw.questionIds : []).filter(id => validIds.has(id)));
-    if (!questionIds.length) return null;
-    const answers = {};
-    const rawAnswers = asObject(raw.answers);
-    questionIds.forEach(id => {
-      if (rawAnswers[id] && typeof rawAnswers[id] === 'object') answers[id] = { ...rawAnswers[id] };
-    });
-    const index = Math.max(0, Math.min(questionIds.length - 1, Number.isInteger(raw.index) ? raw.index : 0));
-    return {
-      ...raw,
-      questionIds,
-      index,
-      answers,
-      settings: { ...asObject(raw.settings) },
-      mockPoints: { ...asObject(raw.mockPoints) },
-      mockTotal: Number(raw.mockTotal) || 0,
-      completed: false,
-    };
-  }
-
-  function canResume(raw, questions, dataVersion) {
-    return restoreSession(raw, questions, dataVersion) !== null;
-  }
-
-  function updateSession(session, changes, now) {
-    session = asObject(session);
-    changes = asObject(changes);
-    return { ...session, ...changes, updatedAt: Number.isFinite(now) ? now : Date.now() };
-  }
-
-  function completeSession(session, now) {
-    return updateSession(session, { completed: true }, now);
-  }
-
-  function progressEntry(value) {
-    value = asObject(value);
-    return {
-      ...value,
-      attempts: Number(value.attempts) || 0,
-      correct: Number(value.correct) || 0,
-      wrong: Number(value.wrong) || 0,
-      favorite: value.favorite === true,
-      note: typeof value.note === 'string' ? value.note : '',
-    };
-  }
-
-  function updateProgressEntry(progress, questionId, updater) {
-    progress = asObject(progress);
-    const current = progressEntry(progress[questionId]);
-    const next = typeof updater === 'function' ? updater(current) : current;
-    return { ...progress, [questionId]: progressEntry(next) };
-  }
-
-  function toggleFavorite(progress, questionId) {
-    return updateProgressEntry(progress, questionId, current => ({ ...current, favorite: !current.favorite }));
-  }
-
-  function setNote(progress, questionId, note) {
-    const clean = typeof note === 'string' ? note.trim() : '';
-    return updateProgressEntry(progress, questionId, current => ({ ...current, note: clean }));
-  }
-
-  function mockEligibleQuestions(questions) {
-    return (Array.isArray(questions) ? questions : []).filter(q =>
-      q.answerStatus === 'available' &&
-      q.structureStatus === 'complete' &&
-      !(q.reviewReasons || []).length
-    );
-  }
-
-  return {
-    TYPES, SCOPES, ORDERS, STUDY_MODES,
-    normalizeSettings, filterQuestions, orderedQuestions,
-    createSession, restoreSession, canResume, updateSession, completeSession,
-    progressEntry, updateProgressEntry, toggleFavorite, setNote,
-    mockEligibleQuestions,
-  };
+const CHAPTERS=Object.fromEntries(Object.entries(OUTLINE).map(([sub,rows])=>[sub,rows.map(row=>row[0])]));
+const INTRO={bio:['绪论',['生物化学与分子生物学发展简史','当代生物化学与分子生物学研究的主要内容','生物化学与分子生物学是生物学、医学的基础和前沿学科']]};
+const PARTS={
+ phys:[],
+ bio:[['第一篇 生物分子结构与功能',0,5],['第二篇 代谢及其调节',6,11],['第三篇 分子生物学',12,18],['第四篇 医学专题',19,26]],
+ cell:[['第一篇 细胞生物学概论',0,2],['第二篇 细胞的结构与功能',3,8],['第三篇 细胞的社会性',9,11],['第四篇 细胞的基本生命活动',12,15],['第五篇 干细胞与细胞工程',16,17]]
+};
+const V2_TO_V3={phys:[0,1,2,3,4,5,6,7,8,9,10,11],bio:[0,1,2,3,4,5,6,9,7,8,10,11,12,13,14,15,16,17,18,21,19,22,20,23,24,25,26],cell:[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17]};
+const OLD_CHAPTERS={
+ phys:['细胞基本功能','血液','血液循环：心脏','血液循环：血管与调节','呼吸','消化与吸收','能量代谢与体温','肾脏与尿液生成','感觉器官','神经系统','内分泌','生殖'],
+ bio:['蛋白质结构与功能','酶与酶促反应','糖代谢','脂质代谢','生物氧化','氨基酸代谢','核苷酸代谢','DNA复制','DNA损伤与修复','RNA转录与加工','蛋白质翻译','基因表达调控','细胞信号与分子机制'],
+ cell:['细胞基本结构','细胞膜与跨膜运输','内质网与高尔基体','溶酶体与蛋白质分选','囊泡运输','线粒体','细胞骨架','细胞连接与细胞外基质','细胞核与染色质','染色体与核型','细胞信号转导','细胞周期','细胞增殖与分化','细胞衰老','细胞死亡与凋亡','干细胞']
+};
+const OLD_TO_NEW={phys:[1,2,3,3,4,5,6,7,8,9,10,11],bio:[0,1,6,8,7,9,10,13,22,14,15,16,20],cell:[1,3,4,4,4,5,6,9,7,7,11,12,14,15,15,16]};
+const LEGACY_MODULE_MAP={
+ 'phys:2':[[3,[0,1]]],'phys:3':[[3,[2,3]]],
+ 'cell:2':[[4,[0,1]]],'cell:3':[[4,[2,5]]],'cell:4':[[4,[4]]],
+ 'cell:7':[[9,[0,1,2]],[10,[0,1]]],'cell:8':[[7,[0,1,2]]],'cell:9':[[7,[2]]],
+ 'cell:12':[[12,[0,2]],[14,[0,1]]],'cell:13':[[15,[0]]],'cell:14':[[15,[1,2]]]
+};
+function partFor(sub,index){return PARTS[sub].find(([,first,last])=>index>=first&&index<=last)?.[0]||''}
+function buildChapters(){
+ const out={};
+ Object.entries(OUTLINE).forEach(([sub,rows])=>rows.forEach(([name,sectionNames],index)=>{
+  const initial=chapterStatusInitial(sub),id=sub+':'+index;
+  out[id]={subject:sub,name,part:partFor(sub,index),sections:sectionNames.map((sectionName,i)=>({id:id+':'+i,name:sectionName,status:initial,rough:sub==='bio'})),legacyModules:[]};
+ }));
+ Object.entries(INTRO).forEach(([sub,[name,sectionNames]])=>{
+  const id=sub+':intro',initial=chapterStatusInitial(sub);
+  out[id]={subject:sub,name,part:'',intro:true,sections:sectionNames.map((sectionName,i)=>({id:id+':'+i,name:sectionName,status:initial,rough:sub==='bio'})),legacyModules:[]};
+ });
+ return out;
+}
+function buildV2Chapters(){const out={};Object.keys(V2_CHAPTERS).forEach(sub=>V2_CHAPTERS[sub].forEach((name,index)=>{let initial=chapterStatusInitial(sub);out[sub+':'+index]={subject:sub,name,part:V2_PARTS[sub].find(([,a,b])=>index>=a&&index<=b)[0],status:initial,modules:V2_MODULES[sub][index].map((n,i)=>({id:sub+':'+index+':'+i,name:n,status:initial}))}}));return out}
+function canonicalChapter(sub,name){
+ if(CHAPTERS[sub]?.includes(name)||name===INTRO[sub]?.[0])return name;
+ let v2=V2_CHAPTERS[sub]?.indexOf(name)??-1;
+ if(v2<0){let old=OLD_CHAPTERS[sub]?.indexOf(name)??-1;if(old>=0)v2=OLD_TO_NEW[sub][old]}
+ return v2>=0?CHAPTERS[sub][V2_TO_V3[sub][v2]]:name;
+}
+function migrateV1(s){
+ const next=buildV2Chapters();
+ Object.values(s.chapters||{}).forEach(old=>{let oldIndex=OLD_CHAPTERS[old.subject]?.indexOf(old.name)??-1;if(oldIndex<0)return;let level=Math.max(0,Math.min(5,Number(old.status)||0)),targets=LEGACY_MODULE_MAP[old.subject+':'+oldIndex]||[[OLD_TO_NEW[old.subject][oldIndex],null]];targets.forEach(([newIndex,indices])=>{let target=next[old.subject+':'+newIndex];(indices?indices.map(i=>target.modules[i]):target.modules).forEach(m=>m.status=Math.max(m.status,level))})});
+ Object.values(next).forEach(c=>{c.status=Math.round(c.modules.reduce((n,m)=>n+m.status,0)/c.modules.length)});
+ s.chapters=next;
+ (s.questions||[]).forEach(q=>{let old=q.chapter;q.chapter=canonicalChapter(q.subject,old);q.module ||=old==='溶酶体与蛋白质分选'?'溶酶体':''});
+ Object.values(s.tasks||{}).flat().forEach(t=>{if(!t.chapter||!CHAPTERS[t.subject])return;let old=t.chapter,newName=canonicalChapter(t.subject,old);if(old===newName)return;t.chapter=newName;if(t.title.endsWith(old))t.title=t.title.slice(0,-old.length)+newName});
+ s.version=2;s.reviews ||= {};s.notes ||= {};s.chapterHistory ||= [{date:today(),phys:20,bio:20,cell:0}];
+ return migrateV2(s);
+}
+function migrateV2(s){
+ const next=buildChapters(),oldChapters=s.chapters||{};
+ Object.entries(oldChapters).forEach(([oldId,old])=>{
+  if(!SUBJECTS[old.subject])return;
+  const oldIndex=Number(oldId.split(':')[1]);
+  const candidate=Number.isInteger(oldIndex)?old.subject+':'+V2_TO_V3[old.subject]?.[oldIndex]:null;
+  const target=(candidate&&next[candidate])||Object.values(next).find(c=>c.subject===old.subject&&c.name===canonicalChapter(old.subject,old.name));
+  if(!target)return;
+  let base=Math.max(0,Math.min(5,Number(old.status)||0));
+  target.sections.forEach(x=>{x.status=base;x.rough=x.status===1&&old.subject==='bio'});
+  target.legacyModules=(old.modules||[]).map(m=>({...m}));
+  (old.modules||[]).forEach(m=>{
+   const exact=target.sections.find(x=>x.name===m.name);
+   if(exact){exact.status=Math.max(0,Math.min(5,Number(m.status)||0));exact.rough=exact.status===1&&old.subject==='bio'}
+  });
+  target.legacyChapterName=old.name;
+ });
+ (s.questions||[]).forEach(q=>{q.chapter=canonicalChapter(q.subject,q.chapter)});
+ Object.values(s.tasks||{}).flat().forEach(t=>{if(!t.chapter||!CHAPTERS[t.subject])return;const old=t.chapter,newName=canonicalChapter(t.subject,old);t.chapter=newName;if(old!==newName&&t.title.endsWith(old))t.title=t.title.slice(0,-old.length)+newName});
+ s.chapters=next;s.version=3;s.reviews ||= {};s.notes ||= {};s.chapterHistory ||= [{date:today(),phys:20,bio:20,cell:0}];
+ return s;
+}
+function chapterPercent(c){return c.sections.length?Math.round(c.sections.reduce((n,x)=>n+x.status/5,0)/c.sections.length*100):0}
+function chapterStarted(c){return c.sections.filter(x=>x.status>0).length}
+const QUESTION_PACK_150=[
+ {"sourceId":"P01","subject":"phys","chapter":"绪论","sourceChapter":"绪论","title":"试述内环境稳态的概念、意义及主要调节机制。","importance":4,"real":false,"framework":"内环境→稳态定义→神经/体液/自身调节→负反馈为主→稳态的生理意义"},
+ {"sourceId":"P02","subject":"phys","chapter":"绪论","sourceChapter":"绪论","title":"比较负反馈、正反馈和前馈调节。","importance":4,"real":false,"framework":"定义→反馈方向→特点→典型实例→生理意义"},
+ {"sourceId":"P03","subject":"phys","chapter":"细胞的基本功能","sourceChapter":"细胞基本功能","title":"试述物质跨细胞膜转运的主要方式及特点。","importance":5,"real":false,"framework":"单纯扩散→易化扩散→主动转运→继发主动转运→出胞/入胞"},
+ {"sourceId":"P04","subject":"phys","chapter":"细胞的基本功能","sourceChapter":"细胞基本功能","title":"试述静息电位的形成机制。","importance":5,"real":false,"framework":"离子分布不均→膜对K⁺通透性高→K⁺外流→电化学平衡→Na⁺-K⁺泵维持梯度"},
+ {"sourceId":"P05","subject":"phys","chapter":"细胞的基本功能","sourceChapter":"细胞基本功能","title":"试述动作电位的产生机制及特点。","importance":5,"real":false,"framework":"阈刺激→Na⁺通道开放→去极化→Na⁺失活/K⁺开放→复极→后超极化→全或无"},
+ {"sourceId":"P06","subject":"phys","chapter":"细胞的基本功能","sourceChapter":"细胞基本功能","title":"试述神经纤维动作电位的传导机制。","importance":5,"real":false,"framework":"局部电流→相邻膜去极化→连续/跳跃传导→方向性→不衰减"},
+ {"sourceId":"P07","subject":"phys","chapter":"细胞的基本功能","sourceChapter":"细胞基本功能","title":"试述骨骼肌兴奋—收缩耦联过程。","importance":4,"real":false,"framework":"NMJ兴奋→肌膜AP→T管→DHPR/RyR→Ca²⁺释放→肌钙蛋白→横桥循环→Ca²⁺回收"},
+ {"sourceId":"P08","subject":"phys","chapter":"细胞的基本功能","sourceChapter":"细胞基本功能","title":"试述神经-肌肉接头兴奋传递过程。","importance":4,"real":false,"framework":"ACh释放→N₂受体→终板电位→肌膜AP→AChE终止"},
+ {"sourceId":"P09","subject":"phys","chapter":"血液","sourceChapter":"血液","title":"血浆蛋白有哪些主要功能？","importance":3,"real":false,"framework":"胶体渗透压→运输→缓冲→凝血→免疫→营养"},
+ {"sourceId":"P10","subject":"phys","chapter":"血液","sourceChapter":"血液","title":"试述红细胞生成及其调节。","importance":4,"real":false,"framework":"造血部位→原料→EPO→缺氧感受→肾→反馈调节"},
+ {"sourceId":"P11","subject":"phys","chapter":"血液","sourceChapter":"血液","title":"试述生理性止血的基本过程。","importance":5,"real":false,"framework":"血管收缩→血小板血栓→凝血→纤维蛋白稳定→纤溶"},
+ {"sourceId":"P12","subject":"phys","chapter":"血液","sourceChapter":"血液","title":"试述血液凝固的基本机制及内、外源途径的关系。","importance":4,"real":false,"framework":"凝血因子级联→X激活→凝血酶→纤维蛋白→共同途径"},
+ {"sourceId":"P13","subject":"phys","chapter":"血液","sourceChapter":"血液","title":"ABO血型的判定原理及输血原则是什么？","importance":3,"real":false,"framework":"红细胞抗原→血浆抗体→凝集→交叉配血→避免供者红细胞被受者抗体凝集"},
+ {"sourceId":"P14","subject":"phys","chapter":"血液循环","sourceChapter":"循环","title":"试述心室肌细胞动作电位及其离子机制。","importance":5,"real":false,"framework":"0期Na⁺→1期瞬时K⁺→2期Ca²⁺与K⁺平衡→3期K⁺→4期静息"},
+ {"sourceId":"P15","subject":"phys","chapter":"血液循环","sourceChapter":"循环","title":"试述窦房结起搏细胞动作电位及自动节律形成机制。","importance":5,"real":false,"framework":"最大舒张电位→If→Ca²⁺内流→K⁺外流→4期自动去极化"},
+ {"sourceId":"P16","subject":"phys","chapter":"血液循环","sourceChapter":"循环","title":"试述心动周期中压力、容积、瓣膜及心音的变化。","importance":5,"real":false,"framework":"房缩→等容收缩→射血→等容舒张→充盈；瓣膜启闭与压力关系"},
+ {"sourceId":"P17","subject":"phys","chapter":"血液循环","sourceChapter":"循环","title":"影响心输出量的因素有哪些？","importance":5,"real":false,"framework":"心率×搏出量→前负荷→后负荷→心肌收缩能力→自主神经"},
+ {"sourceId":"P18","subject":"phys","chapter":"血液循环","sourceChapter":"循环","title":"试述Frank-Starling机制及其生理意义。","importance":5,"real":false,"framework":"静脉回流↑→EDV↑→肌节初长度↑→收缩力↑→搏出量↑→心输出与回流匹配"},
+ {"sourceId":"P19","subject":"phys","chapter":"血液循环","sourceChapter":"循环","title":"试述动脉血压的形成条件。","importance":4,"real":false,"framework":"循环充盈→心脏射血→外周阻力→大动脉弹性→平均充盈压"},
+ {"sourceId":"P20","subject":"phys","chapter":"血液循环","sourceChapter":"循环","title":"影响动脉血压的主要因素有哪些？","importance":5,"real":false,"framework":"搏出量→心率→外周阻力→循环血量/血管容量→大动脉顺应性"},
+ {"sourceId":"P21","subject":"phys","chapter":"血液循环","sourceChapter":"循环","title":"试述压力感受性反射及其意义。","importance":5,"real":false,"framework":"颈动脉窦/主动脉弓→传入→延髓→交感/迷走→心血管效应→短期稳压"},
+ {"sourceId":"P22","subject":"phys","chapter":"血液循环","sourceChapter":"循环","title":"试述微循环的组成及组织液生成机制。","importance":4,"real":false,"framework":"微动脉→毛细血管→微静脉→Starling力量→毛细血管压/胶体渗透压"},
+ {"sourceId":"P23","subject":"phys","chapter":"血液循环","sourceChapter":"循环","title":"影响静脉回心血量的因素有哪些？","importance":4,"real":false,"framework":"体循环平均充盈压→右房压→心脏抽吸→骨骼肌泵→呼吸泵→体位"},
+ {"sourceId":"P24","subject":"phys","chapter":"血液循环","sourceChapter":"循环","title":"冠脉循环有何生理特点？","importance":3,"real":false,"framework":"高耗氧→舒张期灌流→代谢调节为主→腺苷/NO等"},
+ {"sourceId":"P25","subject":"phys","chapter":"呼吸生理","sourceChapter":"呼吸","title":"试述肺通气的动力和阻力。","importance":5,"real":false,"framework":"呼吸肌→胸膜腔负压→跨肺压→弹性阻力+非弹性阻力"},
+ {"sourceId":"P26","subject":"phys","chapter":"呼吸生理","sourceChapter":"呼吸","title":"肺表面活性物质的来源、作用及意义是什么？","importance":4,"real":false,"framework":"Ⅱ型肺泡细胞→降低表面张力→增加顺应性→防肺泡萎陷→减少肺水肿"},
+ {"sourceId":"P27","subject":"phys","chapter":"呼吸生理","sourceChapter":"呼吸","title":"试述肺换气的基本原理及影响因素。","importance":5,"real":false,"framework":"分压差→膜面积/厚度→扩散系数→通气血流比"},
+ {"sourceId":"P28","subject":"phys","chapter":"呼吸生理","sourceChapter":"呼吸","title":"试述氧在血液中的运输形式及氧解离曲线的意义。","importance":5,"real":false,"framework":"溶解+Hb结合→S形曲线→肺装载/组织卸载→P50"},
+ {"sourceId":"P29","subject":"phys","chapter":"呼吸生理","sourceChapter":"呼吸","title":"哪些因素使氧解离曲线右移？其意义是什么？","importance":5,"real":false,"framework":"CO₂↑、H⁺↑、温度↑、2,3-DPG↑→Hb亲和力↓→组织释氧↑"},
+ {"sourceId":"P30","subject":"phys","chapter":"呼吸生理","sourceChapter":"呼吸","title":"试述CO₂在血液中的运输。","importance":4,"real":false,"framework":"溶解→碳酸氢盐→氨基甲酰Hb→氯转移→Haldane效应"},
+ {"sourceId":"P31","subject":"phys","chapter":"呼吸生理","sourceChapter":"呼吸","title":"试述呼吸运动的神经和化学调节。","importance":5,"real":false,"framework":"延髓/脑桥→中枢化学感受器→外周化学感受器→CO₂/H⁺/O₂"},
+ {"sourceId":"P32","subject":"phys","chapter":"消化与吸收","sourceChapter":"消化","title":"试述胃液的主要成分、作用及分泌调节。","importance":4,"real":false,"framework":"HCl→胃蛋白酶原→黏液/HCO₃⁻→内因子→头期/胃期/肠期"},
+ {"sourceId":"P33","subject":"phys","chapter":"消化与吸收","sourceChapter":"消化","title":"试述胰液的成分、作用及分泌调节。","importance":4,"real":false,"framework":"HCO₃⁻+消化酶→促胰液素→CCK→迷走"},
+ {"sourceId":"P34","subject":"phys","chapter":"消化与吸收","sourceChapter":"消化","title":"试述胃排空及其调节。","importance":3,"real":false,"framework":"胃运动→十二指肠反馈→脂肪/酸/高渗→肠胃反射+激素"},
+ {"sourceId":"P35","subject":"phys","chapter":"消化与吸收","sourceChapter":"消化","title":"小肠为什么是营养物质吸收的主要部位？","importance":4,"real":false,"framework":"面积大→绒毛微绒毛→停留时间→转运系统→丰富血流/淋巴"},
+ {"sourceId":"P36","subject":"phys","chapter":"尿的生成和排出","sourceChapter":"肾","title":"试述肾小球滤过的机制及影响因素。","importance":5,"real":false,"framework":"滤过膜→有效滤过压→滤过系数→肾血流→入/出球阻力"},
+ {"sourceId":"P37","subject":"phys","chapter":"尿的生成和排出","sourceChapter":"肾","title":"试述近端小管Na⁺和葡萄糖重吸收机制。","importance":5,"real":false,"framework":"Na⁺-K⁺泵→Na⁺梯度→SGLT→GLUT→继发主动转运"},
+ {"sourceId":"P38","subject":"phys","chapter":"尿的生成和排出","sourceChapter":"肾","title":"试述尿液浓缩和稀释的机制。","importance":5,"real":false,"framework":"髓袢逆流倍增→直小血管交换→髓质高渗→ADH→集合管水通透性"},
+ {"sourceId":"P39","subject":"phys","chapter":"尿的生成和排出","sourceChapter":"肾","title":"试述ADH分泌调节及其对水代谢的作用。","importance":5,"real":false,"framework":"渗透压感受器→血容量感受→V₂→AQP2→水重吸收"},
+ {"sourceId":"P40","subject":"phys","chapter":"尿的生成和排出","sourceChapter":"肾","title":"试述RAAS的激活条件和主要生理效应。","importance":4,"real":false,"framework":"肾灌注↓/NaCl↓/交感↑→肾素→AngⅡ→醛固酮→血容量/血压↑"},
+ {"sourceId":"P41","subject":"phys","chapter":"尿的生成和排出","sourceChapter":"肾","title":"肾脏如何参与酸碱平衡调节？","importance":4,"real":false,"framework":"H⁺分泌→HCO₃⁻重吸收→可滴定酸→NH₄⁺→新生HCO₃⁻"},
+ {"sourceId":"P42","subject":"phys","chapter":"神经系统","sourceChapter":"神经","title":"试述化学性突触传递过程及特点。","importance":5,"real":false,"framework":"AP→Ca²⁺→递质释放→受体→EPSP/IPSP→终止；单向/延搁/可塑性"},
+ {"sourceId":"P43","subject":"phys","chapter":"神经系统","sourceChapter":"神经","title":"比较突触前抑制与突触后抑制。","importance":4,"real":false,"framework":"作用部位→离子机制→递质释放→膜电位变化→功能意义"},
+ {"sourceId":"P44","subject":"phys","chapter":"神经系统","sourceChapter":"神经","title":"试述牵张反射的基本过程和生理意义。","importance":4,"real":false,"framework":"肌梭→Ia→α运动神经元→同名肌收缩→姿势/肌张力"},
+ {"sourceId":"P45","subject":"phys","chapter":"神经系统","sourceChapter":"神经","title":"试述小脑在运动调节中的主要作用。","importance":4,"real":false,"framework":"协调→姿势平衡→肌张力→运动学习→误差校正"},
+ {"sourceId":"P46","subject":"phys","chapter":"神经系统","sourceChapter":"神经","title":"试述自主神经系统对内脏功能调节的特点。","importance":4,"real":false,"framework":"双重支配→紧张性活动→交感/副交感→递质/受体→整体调节"},
+ {"sourceId":"P47","subject":"phys","chapter":"内分泌系统","sourceChapter":"内分泌","title":"下丘脑-腺垂体靶腺轴如何进行调节？","importance":5,"real":false,"framework":"释放激素→垂体激素→靶腺激素→长/短反馈"},
+ {"sourceId":"P48","subject":"phys","chapter":"内分泌系统","sourceChapter":"内分泌","title":"试述甲状腺激素的作用及分泌调节。","importance":5,"real":false,"framework":"TRH→TSH→T₃/T₄→代谢/生长发育→负反馈"},
+ {"sourceId":"P49","subject":"phys","chapter":"内分泌系统","sourceChapter":"内分泌","title":"试述胰岛素降低血糖的主要机制。","importance":5,"real":false,"framework":"GLUT4→糖摄取↑→糖原合成↑→糖酵解↑→糖异生↓→脂肪/蛋白合成↑"},
+ {"sourceId":"P50","subject":"phys","chapter":"内分泌系统","sourceChapter":"内分泌","title":"试述糖皮质激素的主要生理作用及调节。","importance":4,"real":false,"framework":"HPA轴→糖/蛋白/脂代谢→抗炎应激→负反馈"},
+ {"sourceId":"B01","subject":"bio","chapter":"蛋白质的结构与功能","sourceChapter":"蛋白质","title":"试述蛋白质一级至四级结构及维持力。","importance":5,"real":false,"framework":"一级肽键→二级氢键→三级疏水/离子/二硫键→四级亚基"},
+ {"sourceId":"B02","subject":"bio","chapter":"蛋白质的结构与功能","sourceChapter":"蛋白质","title":"试述蛋白质结构与功能的关系。","importance":4,"real":false,"framework":"构象决定功能→活性位点→变构→突变/变性→功能改变"},
+ {"sourceId":"B03","subject":"bio","chapter":"蛋白质的结构与功能","sourceChapter":"蛋白质","title":"什么是蛋白质变性？其特点和意义是什么？","importance":3,"real":false,"framework":"高级结构破坏→一级结构不变→活性丧失→溶解度改变→可逆/不可逆"},
+ {"sourceId":"B04","subject":"bio","chapter":"酶与酶促反应","sourceChapter":"酶","title":"影响酶促反应速度的因素有哪些？","importance":5,"real":false,"framework":"[S]→[E]→温度→pH→抑制剂→激活剂"},
+ {"sourceId":"B05","subject":"bio","chapter":"酶与酶促反应","sourceChapter":"酶","title":"比较竞争性、非竞争性和反竞争性抑制。","importance":5,"real":false,"framework":"结合部位→Km→Vmax→增加底物能否克服"},
+ {"sourceId":"B06","subject":"bio","chapter":"酶与酶促反应","sourceChapter":"酶","title":"试述酶活性的主要调节方式。","importance":4,"real":false,"framework":"变构→共价修饰→酶原激活→酶量→亚细胞定位"},
+ {"sourceId":"B07","subject":"bio","chapter":"核酸的结构与功能","sourceChapter":"核酸","title":"DNA双螺旋结构的主要特点是什么？","importance":4,"real":false,"framework":"反向平行→互补配对→右手双螺旋→碱基堆积→大沟小沟"},
+ {"sourceId":"B08","subject":"bio","chapter":"核酸的结构与功能","sourceChapter":"核酸","title":"RNA的主要类型及功能是什么？","importance":3,"real":false,"framework":"mRNA→tRNA→rRNA→非编码RNA"},
+ {"sourceId":"B09","subject":"bio","chapter":"维生素","sourceChapter":"维生素","title":"水溶性维生素作为辅酶的主要作用有哪些？","importance":3,"real":false,"framework":"B族→辅酶形式→转移基团/氧化还原→典型代谢反应"},
+ {"sourceId":"B10","subject":"bio","chapter":"糖代谢","sourceChapter":"糖代谢","title":"试述糖酵解的过程、关键酶及生理意义。","importance":5,"real":false,"framework":"葡萄糖→丙酮酸→3关键酶→ATP/NADH→缺氧供能"},
+ {"sourceId":"B11","subject":"bio","chapter":"糖代谢","sourceChapter":"糖代谢","title":"试述糖有氧氧化的主要过程及调节。","importance":5,"real":false,"framework":"糖酵解→PDH→TCA→氧化磷酸化→关键调节点"},
+ {"sourceId":"B12","subject":"bio","chapter":"糖代谢","sourceChapter":"糖代谢","title":"试述三羧酸循环的过程特点和生理意义。","importance":5,"real":false,"framework":"乙酰CoA→循环→NADH/FADH₂/GTP→两用代谢枢纽"},
+ {"sourceId":"B13","subject":"bio","chapter":"糖代谢","sourceChapter":"糖代谢","title":"磷酸戊糖途径有何生理意义？","importance":5,"real":false,"framework":"NADPH→脂肪酸/胆固醇→抗氧化→核糖-5-P→核苷酸"},
+ {"sourceId":"B14","subject":"bio","chapter":"糖代谢","sourceChapter":"糖代谢","title":"试述糖异生的主要途径和调节。","importance":5,"real":false,"framework":"丙酮酸羧化酶→PEPCK→F-1,6-BPase→G-6-Pase→激素调节"},
+ {"sourceId":"B15","subject":"bio","chapter":"糖代谢","sourceChapter":"糖代谢","title":"糖原合成与分解如何协调调节？","importance":4,"real":false,"framework":"糖原合酶/磷酸化酶→磷酸化调节→胰岛素/胰高血糖素/肾上腺素"},
+ {"sourceId":"B16","subject":"bio","chapter":"糖代谢","sourceChapter":"糖代谢","title":"比较Cori循环与葡萄糖-丙氨酸循环。","importance":3,"real":false,"framework":"组织来源→运输物→肝处理→供能/排氮意义"},
+ {"sourceId":"B17","subject":"bio","chapter":"生物氧化","sourceChapter":"生物氧化","title":"试述呼吸链的组成及电子传递过程。","importance":5,"real":false,"framework":"复合体I/II→CoQ→III→Cyt c→IV→O₂"},
+ {"sourceId":"B18","subject":"bio","chapter":"生物氧化","sourceChapter":"生物氧化","title":"试述氧化磷酸化的化学渗透机制。","importance":5,"real":false,"framework":"电子传递→质子泵→跨膜质子梯度→ATP合酶→ATP"},
+ {"sourceId":"B19","subject":"bio","chapter":"生物氧化","sourceChapter":"生物氧化","title":"胞质NADH如何进入线粒体进行氧化？","importance":4,"real":false,"framework":"苹果酸-天冬氨酸穿梭→甘油磷酸穿梭→ATP产量差别"},
+ {"sourceId":"B20","subject":"bio","chapter":"脂质代谢","sourceChapter":"脂质代谢","title":"试述脂肪酸β氧化的主要过程。","importance":5,"real":false,"framework":"活化→肉碱转运→脱氢/水合/再脱氢/硫解→乙酰CoA"},
+ {"sourceId":"B21","subject":"bio","chapter":"脂质代谢","sourceChapter":"脂质代谢","title":"试述酮体生成和利用及其生理意义。","importance":5,"real":false,"framework":"肝线粒体生成→乙酰乙酸/β羟丁酸→肝外利用→饥饿供能"},
+ {"sourceId":"B22","subject":"bio","chapter":"脂质代谢","sourceChapter":"脂质代谢","title":"试述脂肪酸合成的部位、原料、过程及调节。","importance":5,"real":false,"framework":"胞质→乙酰CoA转运→ACC→丙二酰CoA→FAS→胰岛素调节"},
+ {"sourceId":"B23","subject":"bio","chapter":"脂质代谢","sourceChapter":"脂质代谢","title":"比较脂肪酸合成与β氧化。","importance":4,"real":false,"framework":"部位→载体→辅酶→方向→调节→生理状态"},
+ {"sourceId":"B24","subject":"bio","chapter":"脂质代谢","sourceChapter":"脂质代谢","title":"试述胆固醇合成及其调节。","importance":4,"real":false,"framework":"乙酰CoA→HMG-CoA还原酶→甲羟戊酸→胆固醇→反馈/激素"},
+ {"sourceId":"B25","subject":"bio","chapter":"脂质代谢","sourceChapter":"脂质代谢","title":"试述血浆脂蛋白的分类、代谢及主要功能。","importance":5,"real":false,"framework":"CM→VLDL→LDL→HDL→载脂蛋白→胆固醇转运"},
+ {"sourceId":"B26","subject":"bio","chapter":"氨基酸代谢","sourceChapter":"氨基酸代谢","title":"试述氨基酸脱氨基的主要方式。","importance":5,"real":false,"framework":"转氨基→氧化脱氨基→联合脱氨基→嘌呤核苷酸循环"},
+ {"sourceId":"B27","subject":"bio","chapter":"氨基酸代谢","sourceChapter":"氨基酸代谢","title":"试述尿素循环的过程及意义。","importance":5,"real":false,"framework":"线粒体+胞质→CPS-I→瓜氨酸→精氨酸→尿素→清除氨"},
+ {"sourceId":"B28","subject":"bio","chapter":"氨基酸代谢","sourceChapter":"氨基酸代谢","title":"氨在体内如何运输和解毒？","importance":4,"real":false,"framework":"谷氨酰胺→丙氨酸→肝尿素→肾NH₄⁺"},
+ {"sourceId":"B29","subject":"bio","chapter":"氨基酸代谢","sourceChapter":"氨基酸代谢","title":"一碳单位的来源、载体和生理意义是什么？","importance":4,"real":false,"framework":"丝氨酸等→FH₄→嘌呤/胸苷酸/甲基化"},
+ {"sourceId":"B30","subject":"bio","chapter":"核苷酸代谢","sourceChapter":"核苷酸代谢","title":"试述嘌呤核苷酸从头合成及其调节。","importance":4,"real":false,"framework":"PRPP→IMP→AMP/GMP→反馈抑制"},
+ {"sourceId":"B31","subject":"bio","chapter":"代谢的整合与调节","sourceChapter":"代谢调节","title":"饥饿状态下糖、脂肪和蛋白质代谢如何协调变化？","importance":5,"real":false,"framework":"胰岛素↓→胰高血糖素↑→糖原分解→糖异生→脂解→酮体"},
+ {"sourceId":"B32","subject":"bio","chapter":"DNA的合成","sourceChapter":"DNA复制","title":"试述DNA复制的基本过程及特点。","importance":5,"real":false,"framework":"半保留→双向→引物→DNA聚合酶→前导/后随链→连接"},
+ {"sourceId":"B33","subject":"bio","chapter":"DNA的合成","sourceChapter":"DNA复制","title":"真核DNA复制有何特点？","importance":4,"real":false,"framework":"多起点→端粒→核小体→DNA pol分类→S期"},
+ {"sourceId":"B34","subject":"bio","chapter":"DNA损伤和损伤修复","sourceChapter":"DNA损伤修复","title":"DNA损伤的主要修复方式有哪些？","importance":5,"real":false,"framework":"直接修复→BER→NER→MMR→HR/NHEJ"},
+ {"sourceId":"B35","subject":"bio","chapter":"RNA的生物合成","sourceChapter":"RNA合成","title":"试述真核RNA转录的基本过程。","importance":5,"real":false,"framework":"RNA pol→启动子→转录因子→起始→延长→终止"},
+ {"sourceId":"B36","subject":"bio","chapter":"RNA的生物合成","sourceChapter":"RNA加工","title":"真核mRNA转录后加工包括哪些过程？","importance":5,"real":false,"framework":"5′帽→剪接→3′poly(A)→编辑/输出"},
+ {"sourceId":"B37","subject":"bio","chapter":"蛋白质的合成","sourceChapter":"蛋白质合成","title":"试述蛋白质翻译的基本过程。","importance":5,"real":false,"framework":"氨基酸活化→起始→延长→终止→核糖体"},
+ {"sourceId":"B38","subject":"bio","chapter":"蛋白质的合成","sourceChapter":"蛋白质合成","title":"蛋白质翻译后加工和靶向有哪些主要方式？","importance":4,"real":false,"framework":"折叠→切割→糖基化/磷酸化→信号肽→细胞器定位"},
+ {"sourceId":"B39","subject":"bio","chapter":"基因表达调控","sourceChapter":"基因调控","title":"试述真核基因表达调控的主要层次。","importance":5,"real":false,"framework":"染色质→转录→RNA加工→mRNA稳定性→翻译→蛋白降解"},
+ {"sourceId":"B40","subject":"bio","chapter":"基因表达调控","sourceChapter":"基因调控","title":"表观遗传调控的主要机制有哪些？","importance":4,"real":false,"framework":"DNA甲基化→组蛋白修饰→染色质重塑→ncRNA"},
+ {"sourceId":"B41","subject":"bio","chapter":"常用的分子生物学技术","sourceChapter":"分子技术","title":"试述PCR的基本原理、步骤及影响因素。","importance":5,"real":false,"framework":"变性→退火→延伸→引物→模板→酶→Mg²⁺→循环扩增"},
+ {"sourceId":"B42","subject":"bio","chapter":"常用的分子生物学技术","sourceChapter":"分子技术","title":"比较Southern、Northern和Western blot。","importance":4,"real":false,"framework":"检测对象→探针/抗体→基本步骤→应用"},
+ {"sourceId":"B43","subject":"bio","chapter":"常用的分子生物学技术","sourceChapter":"分子技术","title":"简述DNA测序的基本原理及二代测序特点。","importance":4,"real":false,"framework":"Sanger终止→NGS并行测序→文库→高通量→数据分析"},
+ {"sourceId":"B44","subject":"bio","chapter":"DNA重组和重组DNA技术","sourceChapter":"重组DNA","title":"基因克隆的一般流程是什么？","importance":4,"real":false,"framework":"DNA获取→酶切/扩增→载体→连接→转化→筛选→鉴定"},
+ {"sourceId":"B45","subject":"bio","chapter":"细胞信号转导与疾病","sourceChapter":"信号转导","title":"试述细胞信号转导的基本模式。","importance":5,"real":false,"framework":"配体→受体→第二信使/激酶→级联放大→效应→终止"},
+ {"sourceId":"B46","subject":"bio","chapter":"细胞信号转导与疾病","sourceChapter":"信号转导","title":"试述PI3K-Akt信号通路的基本过程和功能。","importance":5,"real":false,"framework":"RTK→PI3K→PIP₃→PDK1/Akt→代谢/存活/生长"},
+ {"sourceId":"B47","subject":"bio","chapter":"癌症的分子基础","sourceChapter":"肿瘤生化","title":"肿瘤细胞有哪些主要代谢特征？","importance":4,"real":false,"framework":"Warburg效应→谷氨酰胺依赖→脂质合成→氧化还原→生物合成"},
+ {"sourceId":"B48","subject":"bio","chapter":"基因诊断和基因治疗","sourceChapter":"基因诊断治疗","title":"基因诊断的基本策略和常用技术有哪些？","importance":4,"real":false,"framework":"突变检测→PCR→测序→杂交→NGS→临床解释"},
+ {"sourceId":"B49","subject":"bio","chapter":"肝的生物化学","sourceChapter":"肝生化","title":"肝脏在糖、脂、蛋白质及胆红素代谢中的作用是什么？","importance":4,"real":false,"framework":"血糖稳态→脂蛋白/胆固醇→尿素→胆红素结合排泄"},
+ {"sourceId":"B50","subject":"bio","chapter":"血液的生物化学","sourceChapter":"血液生化","title":"试述血红素合成、分解与胆红素代谢。","importance":4,"real":false,"framework":"血红素合成→衰老RBC→胆绿素/胆红素→白蛋白运输→肝结合→胆汁"},
+ {"sourceId":"C01","subject":"cell","chapter":"绪论","sourceChapter":"绪论","title":"细胞学说的基本内容和意义是什么？","importance":3,"real":false,"framework":"细胞是结构功能基本单位→来源于已有细胞→生命活动基础"},
+ {"sourceId":"C02","subject":"cell","chapter":"细胞的概念与分子基础","sourceChapter":"细胞概念","title":"原核细胞与真核细胞的主要区别是什么？","importance":3,"real":false,"framework":"核膜→细胞器→染色体→核糖体→细胞大小","module":"细胞的基本概念"},
+ {"sourceId":"C03","subject":"cell","chapter":"细胞生物学的研究方法","sourceChapter":"研究方法","title":"常用细胞生物学研究技术有哪些？","importance":4,"real":false,"framework":"光镜/电镜→细胞培养→离心分离→示踪→流式→分子技术"},
+ {"sourceId":"C04","subject":"cell","chapter":"细胞膜与物质的穿膜运输","sourceChapter":"细胞膜","title":"试述细胞膜的流动镶嵌模型。","importance":5,"real":false,"framework":"脂双层→膜蛋白→胆固醇→不对称性→流动性","module":"细胞膜的化学组成与生物学特性"},
+ {"sourceId":"C05","subject":"cell","chapter":"细胞膜与物质的穿膜运输","sourceChapter":"细胞膜","title":"影响细胞膜流动性的因素有哪些？","importance":5,"real":false,"framework":"脂肪酸饱和度→链长→胆固醇→温度→膜蛋白","module":"细胞膜的化学组成与生物学特性"},
+ {"sourceId":"C06","subject":"cell","chapter":"细胞膜与物质的穿膜运输","sourceChapter":"跨膜运输","title":"比较简单扩散、易化扩散和主动运输。","importance":5,"real":false,"framework":"是否载体→能量→浓度梯度→饱和性→特异性"},
+ {"sourceId":"C07","subject":"cell","chapter":"细胞膜与物质的穿膜运输","sourceChapter":"跨膜运输","title":"试述Na⁺-K⁺泵结构、机制和生物学意义。","importance":5,"real":false,"framework":"ATPase→3Na⁺出/2K⁺入→维持梯度→膜电位→继发转运"},
+ {"sourceId":"C08","subject":"cell","chapter":"细胞膜与物质的穿膜运输","sourceChapter":"跨膜运输","title":"试述受体介导的胞吞过程。","importance":4,"real":false,"framework":"配体-受体→网格蛋白包被→小泡→内体→受体循环/降解"},
+ {"sourceId":"C09","subject":"cell","chapter":"细胞的内膜系统与囊泡转运","sourceChapter":"内质网","title":"粗面内质网有哪些主要功能？","importance":5,"real":false,"framework":"分泌/膜蛋白合成→折叠→糖基化→质量控制→运输","module":"内质网"},
+ {"sourceId":"C10","subject":"cell","chapter":"细胞的内膜系统与囊泡转运","sourceChapter":"内质网","title":"滑面内质网有哪些主要功能？","importance":4,"real":false,"framework":"脂质合成→解毒→Ca²⁺储存→糖原代谢","module":"内质网"},
+ {"sourceId":"C11","subject":"cell","chapter":"细胞的内膜系统与囊泡转运","sourceChapter":"高尔基体","title":"试述高尔基体的结构和功能。","importance":5,"real":false,"framework":"cis→medial→trans→修饰→分选→包装→运输","module":"高尔基复合体"},
+ {"sourceId":"C12","subject":"cell","chapter":"细胞的内膜系统与囊泡转运","sourceChapter":"溶酶体","title":"试述溶酶体水解酶的合成、加工及分选。","importance":5,"real":false,"framework":"RER→Golgi→M6P→M6P受体→网格蛋白小泡→内体→溶酶体","module":"溶酶体"},
+ {"sourceId":"C13","subject":"cell","chapter":"细胞的内膜系统与囊泡转运","sourceChapter":"溶酶体","title":"溶酶体有哪些主要功能？","importance":5,"real":false,"framework":"异噬→自噬→胞内消化→细胞更新→疾病","module":"溶酶体"},
+ {"sourceId":"C14","subject":"cell","chapter":"细胞的内膜系统与囊泡转运","sourceChapter":"过氧化物酶体","title":"过氧化物酶体的主要功能是什么？","importance":3,"real":false,"framework":"超长链脂肪酸氧化→H₂O₂→过氧化氢酶→脂质代谢","module":"过氧化物酶体"},
+ {"sourceId":"C15","subject":"cell","chapter":"细胞的内膜系统与囊泡转运","sourceChapter":"囊泡转运","title":"试述细胞内囊泡运输的一般机制。","importance":5,"real":false,"framework":"出芽→包被蛋白→Rab→系链→SNARE→膜融合","module":"囊泡与囊泡转运"},
+ {"sourceId":"C16","subject":"cell","chapter":"细胞的内膜系统与囊泡转运","sourceChapter":"囊泡转运","title":"比较COPⅠ、COPⅡ和clathrin囊泡。","importance":4,"real":false,"framework":"来源→运输方向→货物→包被蛋白","module":"囊泡与囊泡转运"},
+ {"sourceId":"C17","subject":"cell","chapter":"线粒体与细胞的能量转换","sourceChapter":"线粒体","title":"试述线粒体的结构与主要功能。","importance":5,"real":false,"framework":"外膜→内膜→嵴→基质→氧化磷酸化→代谢/凋亡"},
+ {"sourceId":"C18","subject":"cell","chapter":"线粒体与细胞的能量转换","sourceChapter":"线粒体","title":"核编码线粒体蛋白如何进入线粒体？","importance":5,"real":false,"framework":"信号序列→TOM→TIM→膜电位→伴侣蛋白→定位"},
+ {"sourceId":"C19","subject":"cell","chapter":"线粒体与细胞的能量转换","sourceChapter":"线粒体","title":"线粒体半自主性的依据是什么？","importance":4,"real":false,"framework":"mtDNA→核糖体→自行复制→仍依赖核编码蛋白"},
+ {"sourceId":"C20","subject":"cell","chapter":"细胞骨架与细胞的运动","sourceChapter":"细胞骨架","title":"微丝的结构、组装和主要功能是什么？","importance":5,"real":false,"framework":"actin→G-actin/F-actin→极性→聚合→运动/收缩/胞质分裂"},
+ {"sourceId":"C21","subject":"cell","chapter":"细胞骨架与细胞的运动","sourceChapter":"细胞骨架","title":"微管的结构、动态不稳定性及功能是什么？","importance":5,"real":false,"framework":"α/β微管蛋白→13原纤维→GTP帽→灾变/挽救→运输/纺锤体"},
+ {"sourceId":"C22","subject":"cell","chapter":"细胞骨架与细胞的运动","sourceChapter":"细胞骨架","title":"中间纤维有何结构特点和功能？","importance":4,"real":false,"framework":"非极性→机械强度→组织特异→核纤层"},
+ {"sourceId":"C23","subject":"cell","chapter":"细胞骨架与细胞的运动","sourceChapter":"细胞骨架","title":"试述分子马达参与细胞内运输的机制。","importance":5,"real":false,"framework":"kinesin→微管+端→dynein→-端→myosin→actin→ATP"},
+ {"sourceId":"C24","subject":"cell","chapter":"细胞核","sourceChapter":"细胞核","title":"试述核膜和核孔复合体的结构及功能。","importance":5,"real":false,"framework":"双层核膜→核纤层→NPC→选择性核质运输"},
+ {"sourceId":"C25","subject":"cell","chapter":"细胞核","sourceChapter":"细胞核","title":"试述核质运输机制。","importance":5,"real":false,"framework":"NLS/NES→importin/exportin→Ran-GTP梯度→方向性"},
+ {"sourceId":"C26","subject":"cell","chapter":"细胞核","sourceChapter":"染色质","title":"试述核小体的结构及染色质高级包装。","importance":5,"real":false,"framework":"组蛋白八聚体→DNA缠绕→H1→高级折叠→染色体","module":"染色质与染色体"},
+ {"sourceId":"C27","subject":"cell","chapter":"细胞核","sourceChapter":"染色质","title":"常染色质与异染色质有何区别？","importance":4,"real":false,"framework":"凝集程度→转录活性→复制时间→核内分布","module":"染色质与染色体"},
+ {"sourceId":"C28","subject":"cell","chapter":"细胞核","sourceChapter":"细胞核","title":"核仁的结构和功能是什么？","importance":4,"real":false,"framework":"纤维中心→致密纤维→颗粒区→rRNA转录→核糖体装配"},
+ {"sourceId":"C29","subject":"cell","chapter":"细胞连接与细胞黏附","sourceChapter":"细胞连接","title":"细胞连接的主要类型及功能是什么？","importance":5,"real":false,"framework":"紧密连接→黏着连接→桥粒→半桥粒→缝隙连接","module":"细胞连接"},
+ {"sourceId":"C30","subject":"cell","chapter":"细胞微环境及其与细胞的相互作用","sourceChapter":"ECM","title":"细胞外基质的主要成分和功能是什么？","importance":5,"real":false,"framework":"胶原→弹性蛋白→蛋白聚糖→黏附糖蛋白→支撑/信号","module":"细胞外基质的主要组成成分"},
+ {"sourceId":"C31","subject":"cell","chapter":"细胞微环境及其与细胞的相互作用","sourceChapter":"ECM","title":"整合素如何连接细胞外基质和细胞骨架？","importance":4,"real":false,"framework":"α/β异二聚体→ECM→黏附斑→actin→双向信号","module":"细胞外基质的主要组成成分"},
+ {"sourceId":"C32","subject":"cell","chapter":"细胞间信息传递","sourceChapter":"信号转导","title":"细胞信号转导有哪些基本环节和特点？","importance":5,"real":false,"framework":"信号→受体→转导→放大→效应→终止；特异/整合"},
+ {"sourceId":"C33","subject":"cell","chapter":"细胞间信息传递","sourceChapter":"信号转导","title":"试述GPCR-cAMP-PKA信号通路。","importance":5,"real":false,"framework":"配体→GPCR→Gs→AC→cAMP→PKA→靶蛋白"},
+ {"sourceId":"C34","subject":"cell","chapter":"细胞间信息传递","sourceChapter":"信号转导","title":"试述GPCR-PLC-IP₃/DAG信号通路。","importance":5,"real":false,"framework":"Gq→PLCβ→PIP₂→IP₃+DAG→Ca²⁺+PKC"},
+ {"sourceId":"C35","subject":"cell","chapter":"细胞间信息传递","sourceChapter":"信号转导","title":"试述受体酪氨酸激酶-Ras-MAPK通路。","importance":5,"real":false,"framework":"RTK二聚磷酸化→Grb2/SOS→Ras→Raf→MEK→ERK"},
+ {"sourceId":"C36","subject":"cell","chapter":"细胞间信息传递","sourceChapter":"信号转导","title":"试述JAK-STAT信号通路。","importance":4,"real":false,"framework":"细胞因子受体→JAK→STAT磷酸化→二聚→入核→转录"},
+ {"sourceId":"C37","subject":"cell","chapter":"细胞间信息传递","sourceChapter":"信号转导","title":"信号通路为什么具有放大、交叉和终止机制？","importance":4,"real":false,"framework":"酶级联→串扰→反馈→磷酸酶→受体内化→第二信使清除"},
+ {"sourceId":"C38","subject":"cell","chapter":"细胞分裂与细胞周期","sourceChapter":"细胞周期","title":"细胞周期包括哪些阶段？各阶段主要发生什么？","importance":5,"real":false,"framework":"G1→S→G2→M→G0→DNA复制/准备/分裂","module":"细胞周期及其调控"},
+ {"sourceId":"C39","subject":"cell","chapter":"细胞分裂与细胞周期","sourceChapter":"细胞周期","title":"Cyclin-CDK如何调控细胞周期？","importance":5,"real":false,"framework":"Cyclin周期表达→CDK激活→底物磷酸化→泛素降解","module":"细胞周期及其调控"},
+ {"sourceId":"C40","subject":"cell","chapter":"细胞分裂与细胞周期","sourceChapter":"细胞周期","title":"细胞周期检查点有哪些？作用是什么？","importance":5,"real":false,"framework":"G1/S→DNA损伤→G2/M→复制完整性→纺锤体检查点","module":"细胞周期及其调控"},
+ {"sourceId":"C41","subject":"cell","chapter":"细胞分裂与细胞周期","sourceChapter":"细胞分裂","title":"试述有丝分裂的主要过程。","importance":5,"real":false,"framework":"前期→前中期→中期→后期→末期→胞质分裂","module":"细胞分裂"},
+ {"sourceId":"C42","subject":"cell","chapter":"细胞分裂与细胞周期","sourceChapter":"减数分裂","title":"减数分裂与有丝分裂有何主要区别？","importance":4,"real":false,"framework":"一次复制两次分裂→同源染色体配对→交换→单倍体","module":"细胞分裂"},
+ {"sourceId":"C43","subject":"cell","chapter":"细胞分化","sourceChapter":"细胞分化","title":"细胞分化的本质及主要调控机制是什么？","importance":5,"real":false,"framework":"基因组基本相同→选择性基因表达→转录/表观遗传→微环境"},
+ {"sourceId":"C44","subject":"cell","chapter":"细胞衰老与细胞死亡","sourceChapter":"细胞衰老","title":"细胞衰老有哪些主要特征和机制？","importance":4,"real":false,"framework":"增殖停滞→端粒缩短→DNA损伤→p53/p21→SASP","module":"细胞衰老"},
+ {"sourceId":"C45","subject":"cell","chapter":"细胞衰老与细胞死亡","sourceChapter":"细胞死亡","title":"试述细胞凋亡的形态学和生化特征。","importance":5,"real":false,"framework":"细胞皱缩→染色质凝集→凋亡小体→caspase→无明显炎症","module":"细胞死亡"},
+ {"sourceId":"C46","subject":"cell","chapter":"细胞衰老与细胞死亡","sourceChapter":"细胞死亡","title":"试述线粒体内源性凋亡通路。","importance":5,"real":false,"framework":"DNA损伤/应激→Bcl-2家族→MOMP→Cyt c→Apaf-1→caspase-9→执行caspase","module":"细胞死亡"},
+ {"sourceId":"C47","subject":"cell","chapter":"细胞衰老与细胞死亡","sourceChapter":"细胞死亡","title":"试述死亡受体介导的外源性凋亡通路。","importance":5,"real":false,"framework":"Fas/TNFR→FADD→DISC→caspase-8→执行caspase","module":"细胞死亡"},
+ {"sourceId":"C48","subject":"cell","chapter":"细胞衰老与细胞死亡","sourceChapter":"自噬","title":"自噬的基本过程及生物学意义是什么？","importance":4,"real":false,"framework":"起始→隔离膜→自噬体→溶酶体融合→降解→稳态/应激","module":"细胞自噬"},
+ {"sourceId":"C49","subject":"cell","chapter":"干细胞与组织的维持和再生","sourceChapter":"干细胞","title":"干细胞有哪些基本特征？胚胎干细胞与成体干细胞有何区别？","importance":5,"real":false,"framework":"自我更新→分化潜能→全能/多能/多潜能→来源与应用","module":"干细胞概述"},
+ {"sourceId":"C50","subject":"cell","chapter":"细胞工程","sourceChapter":"细胞工程","title":"iPSC的基本原理及应用价值是什么？","importance":4,"real":false,"framework":"体细胞→重编程因子→多能性恢复→疾病模型/再生医学→风险"}
+];
+const NAV=[['today','今日'],['calendar','日历计划'],['phys','生理'],['bio','生化'],['cell','细胞'],['bank','648大题库'],['stats','学习统计'],['settings','设置']];
+const pad=n=>String(n).padStart(2,'0');
+function parseDate(s){const [y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d,12)}
+function iso(d){return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())}
+function addDays(s,n){let d=parseDate(s);d.setDate(d.getDate()+n);return iso(d)}
+function diffDays(a,b){return Math.round((parseDate(b)-parseDate(a))/86400000)}
+function today(){return iso(new Date())}
+function endDate(){return addDays(state.settings.examDate,-1)}
+function phase(date){if(date<='2026-10-26')return 1;if(date<='2026-11-16')return 2;if(date<='2026-12-07')return 3;return 4}
+const PHASES={1:'转轨和补课期',2:'三科二轮 · 主观题化',3:'真题与限时训练',4:'冲刺背诵'};
+function uid(){return (crypto.randomUUID?crypto.randomUUID():'id-'+Date.now()+'-'+Math.random().toString(36).slice(2))}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function newTask(date,subject,title,minutes,type,priority,chapter=''){return{id:uid(),date,subject,title,minutes,type,priority,chapter,done:false,order:0,origin:null}}
+function chapterStatusInitial(subject){return subject==='phys'?1:subject==='bio'?1:0}
+function packedQuestion(row){const n=Number(row.sourceId.slice(1))-1,offset=row.subject==='cell'?Math.floor(n/2):n,base=today()>START?today():START;return {...row,id:uid(),lastReview:'',due:addDays(base,offset),mastery:0,myAnswer:'',interval:0,reps:0}}
+/* 新题库仅在旧数据第一次升级时合并一次；按科目和题目去重，已有作答记录优先。 */
+function ensureQuestionPack(s){
+ s.meta ||= {};
+ if(s.meta.questionPack150)return;
+ const key=q=>q.subject+'|'+String(q.title||'').trim().replace(/\s+/g,' ');
+ const existing=new Map(s.questions.map(q=>[key(q),q]));
+ QUESTION_PACK_150.forEach(row=>{const k=key(row),old=existing.get(k);if(old){old.sourceId ||=row.sourceId;old.sourceChapter ||=row.sourceChapter}else{const fresh=packedQuestion(row);s.questions.push(fresh);existing.set(k,fresh)}});
+ s.meta.questionPack150=true;
+}
+function initialState(){
+ const chapters=buildChapters();
+ const questions=QUESTION_PACK_150.map(packedQuestion);
+ const s={version:3,settings:{examDate:DEFAULT_EXAM,dailyHours:5,theme:'light'},chapters,questions,tasks:{},reviews:{},notes:{},chapterHistory:[{date:today(),phys:20,bio:20,cell:0}],meta:{created:today(),questionPack150:true}};
+ generatePlan(s,START,addDays(DEFAULT_EXAM,-1),false);return s;
+}
+function dailyTopics(subject,date,p){
+ const idx=diffDays(START,date),list=CHAPTERS[subject];
+ if(p<=3){let offset=p===1?idx:p===2?idx-22:idx-43,days=p===1?22:21;let first=Math.min(list.length-1,Math.floor(offset*list.length/days)),last=Math.max(first+1,Math.ceil((offset+1)*list.length/days));return list.slice(first,last).join('、')}
+ return list[(idx-64)%list.length]
+}
+function makeDay(s,date){
+ const p=phase(date),idx=diffDays(START,date),day=parseDate(date).getDay(),h=Number(s.settings.dailyHours)||5;
+ let blocks=[];
+ if(p===1){blocks=[['cell','新学',120,1],['bio','复习',80,2],['phys','复习',55,3],['output','口述',30,1],['review','复习',15,2]]}
+ else if(p===2){blocks=[['cell','复习',70,1],['bio','复习',70,1],['phys','复习',55,2],['output','口述',55,1],['write','手写',35,1],['review','复习',15,2]]}
+ else if(p===3){
+   if(day===0)blocks=h<=3?[['mock','真题',180,1]]:[['mock','真题',180,1],['review','复习',80,1],['output','口述',30,2]];
+   else if(day===1)blocks=[['error','复习',100,1],['cell','复习',50,2],['bio','复习',50,2],['phys','复习',40,2],['output','口述',30,1]];
+   else if(day===3||day===6)blocks=[['timed','真题',100,1],['cell','复习',50,2],['bio','复习',50,2],['phys','复习',40,2],['output','手写',35,1]];
+   else blocks=[['cell','复习',65,1],['bio','复习',65,1],['phys','复习',55,2],['output','口述',60,1],['write','手写',35,1],['review','复习',15,2]];
+ } else {blocks=[['cell','背诵',55,1],['bio','背诵',55,1],['phys','背诵',55,1],['output','口述',65,1],['write','手写',45,1],['review','复习',15,2]];if(diffDays(date,s.settings.examDate)<=4)blocks=[['cell','背诵',45,1],['bio','背诵',45,1],['phys','背诵',45,1],['output','口述',55,1],['review','复习',30,1]]}
+ const defaultMin=blocks.reduce((a,b)=>a+b[2],0),fixedMin=blocks.some(b=>b[0]==='mock')?180:0,ratio=(h*60-fixedMin)/Math.max(1,defaultMin-fixedMin);
+ let tasks=blocks.map(([kind,type,min,priority],n)=>{
+   let sub=['cell','bio','phys'].includes(kind)?kind:kind==='output'||kind==='write'?'output':kind==='review'||kind==='error'?'review':'exam';
+   let ch=['cell','bio','phys'].includes(kind)?dailyTopics(kind,date,p):'';
+   let title='';
+   if(kind==='cell')title=(p===1?'建立章节框架：':p===2?'二轮机制梳理：':p===3?'真题查漏：':'高频大题循环：')+ch;
+   if(kind==='bio')title=(p===1?'二轮建体系：':p===2?'二轮串联：':p===3?'真题查漏：':'高频大题循环：')+ch;
+   if(kind==='phys')title=(p===1?'快速二轮与机制输出：':p===2?'系统问答化：':p===3?'真题查漏：':'高频大题循环：')+ch;
+   if(kind==='output')title=p===1?'闭卷口述 2—3 题，按“定义→机制→调控→意义”组织':p===2?'闭卷口述 6—8 题，不能看书提示':p===3?'闭卷口述 6—8 题，优先错题与到期题':'高频机制闭卷口述，补齐漏点';
+   if(kind==='write')title=p===2?'完整手写 2 道问答题，每题 8—12 分钟并自评':p===3?'限时手写 2 道题，核对答题框架':'限时手写高频题，保留答题手感';
+   if(kind==='review')title=p===1?'今日复盘：记录薄弱点和明日重点':p===3?'错题与失分点回看，填写晚间复盘':'当日回顾并安排薄弱点';
+   if(kind==='error')title='模拟后错题回炉：重写失分题，标注漏点与原因';
+   if(kind==='mock')title='648 全真模拟 180 分钟：使用已收集真题/回忆题';
+   if(kind==='timed')title='专题限时训练：选择一科机制题，按正式节奏书写';
+   const t=newTask(date,sub,title,kind==='mock'?180:Math.max(10,Math.round(min*ratio/5)*5),type,priority,ch);t.order=n;return t;
+ });
+ // 最后几天不再引入新章；总时长随设置的每日可用时间等比例变化。
+ return tasks;
+}
+function generatePlan(s,from,to,preserve){for(let d=from;d<=to;d=addDays(d,1)){let fresh=makeDay(s,d);if(preserve&&s.tasks[d]){const kept=s.tasks[d].filter(t=>t.done||t.origin||t.custom);s.tasks[d]=[...kept,...fresh].map((t,i)=>({...t,order:i}))}else s.tasks[d]=fresh}}
+function load(){try{const raw=localStorage.getItem(KEY);if(!raw)return initialState();let s=JSON.parse(raw);if(!s.settings||!s.tasks||!s.questions||!s.chapters)throw Error('数据格式不兼容');if(s.version===1)s=migrateV1(s);else if(s.version===2)s=migrateV2(s);else if(s.version!==3)throw Error('数据版本不兼容');ensureQuestionPack(s);localStorage.setItem(KEY,JSON.stringify(s));s.reviews ||= {};s.notes ||= {};s.chapterHistory ||= [{date:today(),phys:20,bio:20,cell:0}];return s}catch(e){console.warn(e);alert('保存的数据无法读取。请先导出或检查浏览器存储；本次将显示初始计划。');return initialState()}}
+let state=load(),page='today',selectedDate=today()<START?START:today(),calendarMonth=selectedDate.slice(0,7),qFilter='all',qSubject='all',openChapter=null;
+function save(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){toast('保存失败：浏览器存储空间可能已满。请先导出 JSON。')}}
+function toast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.remove('hidden');clearTimeout(toast.timer);toast.timer=setTimeout(()=>el.classList.add('hidden'),3500)}
+function tasksOf(date){return (state.tasks[date]||[]).slice().sort((a,b)=>a.order-b.order)}
+function taskCompletion(date){let t=tasksOf(date);return t.length?Math.round(t.filter(x=>x.done).length/t.length*100):0}
+function totalCompletion(){let all=Object.entries(state.tasks).filter(([d])=>d<state.settings.examDate&&d>=START).flatMap(([,list])=>list);return all.length?Math.round(all.filter(x=>x.done).length/all.length*100):0}
+function streak(){let n=0,d=today();if(taskCompletion(d)===0)d=addDays(d,-1);while(d>=START&&taskCompletion(d)>0){n++;d=addDays(d,-1)}return n}
+function dueQuestions(date=today()){return state.questions.filter(q=>q.due&&q.due<=date).sort((a,b)=>b.importance-a.importance)}
+function statusPercent(sub){let a=Object.values(state.chapters).filter(c=>c.subject===sub),nodes=a.flatMap(c=>c.sections.map(m=>m.status));return nodes.length?Math.round(nodes.reduce((n,v)=>n+v/5,0)/nodes.length*100):0}
+function recordChapterProgress(){let d=today(),snap={date:d,phys:statusPercent('phys'),bio:statusPercent('bio'),cell:statusPercent('cell')};state.chapterHistory=state.chapterHistory.filter(x=>x.date!==d);state.chapterHistory.push(snap);state.chapterHistory.sort((a,b)=>a.date.localeCompare(b.date))}
+function chapterProgressOn(date,sub){let a=(state.chapterHistory||[]).filter(x=>x.date<=date).at(-1);return a?a[sub]:{phys:20,bio:20,cell:0}[sub]}
+function subjectTime(date){return tasksOf(date).reduce((n,t)=>n+t.minutes,0)}
+function fmtTime(min){return min>=60?(Math.round(min/60*10)/10)+' 小时':min+' 分钟'}
+function dateCN(d){return d.replaceAll('-','/')}function weekDay(d){return '日一二三四五六'[parseDate(d).getDay()]}
+function setPage(p){page=p;render();window.scrollTo({top:0,behavior:'smooth'})}
+function render(){document.documentElement.dataset.theme=state.settings.theme;document.getElementById('nav').innerHTML=NAV.map(([id,name])=>`<button data-page="${id}" class="${page===id?'active':''}">${name}</button>`).join('');const names={today:'今日任务',calendar:'每日规划',phys:'生理学进度',bio:'生物化学进度',cell:'医学细胞生物学进度',bank:'648 问答题库',stats:'学习统计',settings:'设置与数据'};document.getElementById('pageEyebrow').textContent='SUN YAT-SEN UNIVERSITY · 648';document.getElementById('pageTitle').textContent=names[page];document.getElementById('pageSub').textContent=page==='today'?'从今天的闭卷输出开始':page==='settings'?'计划和记录保存在此浏览器':`2026/10/05 — ${dateCN(endDate())}`;document.getElementById('view').innerHTML=page==='today'?renderToday():page==='calendar'?renderCalendar():['phys','bio','cell'].includes(page)?renderSubject(page):page==='bank'?renderBank():page==='stats'?renderStats():renderSettings()}
+function taskHTML(t){const badge=t.subject==='output'?'主观输出':t.subject==='review'?'复盘':t.subject==='exam'?'模拟/训练':SHORT[t.subject];return `<div class="task ${t.done?'done':''}" draggable="true" data-id="${t.id}" data-date="${t.date}"><input type="checkbox" data-action="toggleTask" data-id="${t.id}" data-date="${t.date}" ${t.done?'checked':''} aria-label="完成 ${esc(t.title)}"><div><div class="tasktitle">${esc(t.title)}</div><div class="taskmeta"><span class="badge">${badge}</span><span class="badge">${esc(t.type)}</span><span class="badge ${t.priority===1?'hot':''}">${t.priority===1?'高':t.priority===2?'中':'常规'}优先级</span> · ${fmtTime(t.minutes)}${t.origin?' · 顺延':''}</div></div><div class="taskops"><span class="drag" title="拖动排序">⠿</span><button class="btn sm" data-action="editTask" data-id="${t.id}" data-date="${t.date}">编辑</button><button class="btn sm danger" data-action="deleteTask" data-id="${t.id}" data-date="${t.date}">删除</button></div></div>`}
+function renderToday(){let d=today(),display=d<START?START:d,all=tasksOf(display),remaining=Math.max(0,diffDays(d,state.settings.examDate));return `<div class="grid stats"><div class="card stat"><div class="k">今天</div><strong>${dateCN(d)}</strong><small>星期${weekDay(d)}</small></div><div class="card stat"><div class="k">距初试</div><strong>${remaining} 天</strong><small>${dateCN(state.settings.examDate)}</small></div><div class="card stat"><div class="k">当前阶段</div><strong style="font-size:16px">${PHASES[phase(display)]}</strong><small>第 ${phase(display)} / 4 阶段</small></div><div class="card stat"><div class="k">总体任务完成</div><strong>${totalCompletion()}%</strong><div class="progress"><span style="width:${totalCompletion()}%"></span></div></div><div class="card stat"><div class="k">连续学习</div><strong>${streak()} 天</strong><small>按有完成记录的日期计算</small></div><div class="card stat"><div class="k">今日预计 648</div><strong>${fmtTime(subjectTime(display))}</strong><small>${all.filter(t=>t.done).length} / ${all.length} 项完成</small></div></div><div class="grid cols"><div class="grid"><section class="card section"><div class="sectionhead"><div><h2>今日任务</h2><p>${dateCN(display)} · ${PHASES[phase(display)]}</p></div><button class="btn soft sm" data-action="addTask" data-date="${display}">＋ 添加任务</button></div>${all.length?all.map(taskHTML).join(''):'<div class="empty">今日没有安排任务</div>'}</section><section class="card section"><div class="sectionhead"><div><h2>晚间复盘</h2><p>实际用时、薄弱点和明天的重点</p></div><button class="btn sm" data-page="stats">查看统计</button></div>${reviewForm(display)}</section></div><div class="grid"><section class="card section"><div class="sectionhead"><div><h2>今日需要复习的大题</h2><p>到期 ${dueQuestions(display).length} 道 · 点击进入闭卷回忆</p></div><button class="btn sm" data-page="bank">题库</button></div>${dueQuestions(display).length?dueQuestions(display).slice(0,6).map(q=>`<div class="mini-item"><strong>${esc(q.title)}</strong><small>${SHORT[q.subject]} · ${esc(q.chapter)} · ${q.lastReview?'上次 '+dateCN(q.lastReview):'尚未复习'}</small><div style="margin-top:7px"><button class="btn sm soft" data-action="openQuestion" data-id="${q.id}">开始回忆</button></div></div>`).join(''):'<div class="empty">今天没有到期的大题</div>'}</section><section class="card section"><h2>三科掌握进度</h2><div class="mini-list" style="margin-top:16px">${Object.keys(SUBJECTS).map(s=>`<div><div class="row"><span>${SHORT[s]}</span><strong>${statusPercent(s)}%</strong></div><div class="progress ${s==='bio'?'gold':s==='cell'?'blue':''}" style="margin-top:7px"><span style="width:${statusPercent(s)}%"></span></div></div>`).join('')}</div><p class="sub" style="margin:16px 0 0">进度按各节状态计算。生理各节已完成第一轮；生化各节第一轮粗略完成；细胞未开始。</p></section></div></div>`}
+function renderCalendar(){let [y,m]=calendarMonth.split('-').map(Number),first=new Date(y,m-1,1,12),start=first.getDay(),days=new Date(y,m,0).getDate(),cells=[];for(let i=0;i<start;i++)cells.push('<div></div>');for(let n=1;n<=days;n++){let d=`${y}-${pad(m)}-${pad(n)}`,ts=tasksOf(d),done=ts.filter(t=>t.done).length,out=d<START||d>endDate();cells.push(`<button class="day ${d===today()?'today':''} ${d===selectedDate?'selected':''} ${out?'out':''}" data-action="selectDate" data-date="${d}"><span class="num">${n}</span>${ts.length&&done===ts.length?'<span class="tick"> ✓</span>':''}<div class="line">${ts.length} 项 · ${done} 完成<br>${fmtTime(subjectTime(d))}</div><div class="dots"><i class="dot ${done>0?'filled':''}"></i><i class="dot ${done>=Math.ceil(ts.length/2)&&ts.length?'filled':''}"></i><i class="dot ${done===ts.length&&ts.length?'filled':''}"></i></div></button>`)}return `<div class="cal-layout"><section class="card section"><div class="calendarbar"><button class="btn sm" data-action="month" data-step="-1">‹ 上月</button><h2>${y} 年 ${m} 月</h2><button class="btn sm" data-action="month" data-step="1">下月 ›</button></div><div class="calgrid">${'日一二三四五六'.split('').map(x=>`<div class="weekday">${x}</div>`).join('')}${cells.join('')}</div><p class="footer">浅绿底为今天；✓ 为当天任务全部完成。计划截止到考前一天。</p></section><section class="card section"><div class="sectionhead"><div><h2>${dateCN(selectedDate)} · 星期${weekDay(selectedDate)}</h2><p>${PHASES[phase(selectedDate)]} · ${taskCompletion(selectedDate)}% 完成</p></div></div><div class="actions" style="margin-bottom:12px"><button class="btn sm soft" data-action="addTask" data-date="${selectedDate}">＋ 添加</button><button class="btn sm" data-action="defer" data-date="${selectedDate}" ${tasksOf(selectedDate).some(t=>!t.done)?'':'disabled'}>顺延未完成任务</button></div>${tasksOf(selectedDate).length?tasksOf(selectedDate).map(taskHTML).join(''):'<div class="empty">这一天暂无任务</div>'}<div class="field" style="margin-top:15px"><label>当天备注</label><textarea id="dayNote" data-date="${selectedDate}" placeholder="记录计划变化、难点或提醒">${esc(state.notes[selectedDate]||'')}</textarea></div></section></div>`}
+function renderSubject(sub){
+ const list=Object.entries(state.chapters).filter(([,c])=>c.subject===sub&&!c.intro),percent=statusPercent(sub),oral=list.filter(([,c])=>c.sections.every(x=>x.status>=3)).length,sectionCount=Object.values(state.chapters).filter(c=>c.subject===sub).reduce((n,c)=>n+c.sections.length,0);
+ const statusSelect=(id,value,chapter)=>`<select data-action="sectionStatus" data-id="${esc(id)}" data-chapter="${esc(chapter)}" aria-label="本节掌握状态">${STATUS.map((v,i)=>`<option value="${i}" ${value===i?'selected':''}>${v}</option>`).join('')}</select>`;
+ const chapterHTML=(id,c,index)=>`<div class="chaptertree"><div class="chapterrow"><details ${openChapter===id?'open':''}><summary><strong>${c.intro?'绪论':'第'+cn(index+1)+'章 '+esc(c.name)}</strong><span class="sub"> · ${c.sections.length} 节 · ${chapterPercent(c)}% · 已学 ${chapterStarted(c)} 节</span></summary><div class="modulelist">${c.sections.map((section,i)=>`<div class="moduleline"><span>第${cn(i+1)}节 ${esc(section.name)} ${section.rough&&section.status===1?'<small class="sub">（粗略完成）</small>':''}</span>${statusSelect(section.id,section.status,id)}</div>`).join('')}${c.legacyModules?.length?`<details class="legacyfold"><summary class="sub">查看旧版知识模块记录（${c.legacyModules.length}）</summary><div class="sub">${c.legacyModules.map(m=>`<div>${esc(m.name)} · ${['未学','已看书','能理解','能口述','能写大题','已掌握'][m.status]||'未学'}</div>`).join('')}</div></details>`:''}</div></details><div><strong>${chapterPercent(c)}%</strong><div class="progress" style="margin-top:7px"><span style="width:${chapterPercent(c)}%"></span></div></div></div></div>`;
+ const groups=PARTS[sub].length?PARTS[sub].map(([part,first,last])=>`<div class="partfold"><div class="parttitle">${esc(part)} <span class="sub">· 第 ${first+1}—${last+1} 章</span></div><div class="partbody">${Array.from({length:last-first+1},(_,n)=>{let index=first+n,id=sub+':'+index;return chapterHTML(id,state.chapters[id],index)}).join('')}</div></div>`).join(''):list.map(([id,c],index)=>chapterHTML(id,c,index)).join('');
+ const intro=INTRO[sub]?chapterHTML(sub+':intro',state.chapters[sub+':intro'],-1):'';
+ return `<div class="subject-hero"><div class="card"><div class="k muted">综合掌握程度</div><strong style="font-size:25px">${percent}%</strong><div class="progress" style="margin-top:9px"><span style="width:${percent}%"></span></div></div><div class="card"><div class="k muted">教材章节 / 节</div><strong style="font-size:25px">${list.length} / ${sectionCount}</strong><p class="sub" style="margin:4px 0 0">${EDITION[sub]}</p></div><div class="card"><div class="k muted">整章能口述及以上</div><strong style="font-size:25px">${oral}</strong><p class="sub" style="margin:4px 0 0">章节进度由各节自动计算</p></div></div><section class="card section"><div class="sectionhead"><div><h2>课程大纲与掌握状态</h2><p>科目 → ${PARTS[sub].length?'篇 → ':''}章 → 节。点击章名展开；每节单独记录状态。</p></div><button class="btn sm" data-page="settings">重新规划 →</button></div><div class="outline">${intro}${groups}</div></section>`;
+}
+const CN_NUM=['一','二','三','四','五','六','七','八','九','十','十一','十二','十三','十四','十五','十六','十七','十八','十九','二十','二十一','二十二','二十三','二十四','二十五','二十六','二十七'];
+function cn(n){return CN_NUM[n-1]||String(n)}
+/* 题库 JSON 只导入题目；先完整校验，再合并，避免覆盖已有答案与复习记录。 */
+function parseQuestionJson(data){
+ const rows=Array.isArray(data)?data:data?.questions;
+ if(!Array.isArray(rows)||!rows.length)throw Error('需要题目数组，或包含 questions 数组的对象');
+ return rows.map((row,index)=>{
+  if(!row||typeof row!=='object'||Array.isArray(row))throw Error(`第 ${index+1} 题格式错误`);
+  const labels={phys:'phys',bio:'bio',cell:'cell',生理:'phys',生理学:'phys',生化:'bio',生物化学与分子生物学:'bio',细胞:'cell',医学细胞生物学:'cell'};
+  const subject=labels[String(row.subject??row['科目']??'').trim()];
+  if(!subject)throw Error(`第 ${index+1} 题的科目无效，请用 phys / bio / cell 或中文科目名`);
+  const title=String(row.title??row['题目']??'').trim();
+  if(!title)throw Error(`第 ${index+1} 题缺少题目`);
+  const importance=Number(row.importance??row['重要程度']??3);
+  if(!Number.isInteger(importance)||importance<1||importance>5)throw Error(`第 ${index+1} 题的重要程度须为 1—5`);
+  const masteryRaw=row.mastery??row['熟练度']??0;
+  const mastery=typeof masteryRaw==='string'&&!/^\d+$/.test(masteryRaw)?MASTERY.indexOf(masteryRaw):Number(masteryRaw);
+  if(!Number.isInteger(mastery)||mastery<0||mastery>4)throw Error(`第 ${index+1} 题的熟练度无效`);
+  const due=String(row.due??row['下次复习日期']??today());
+  const lastReview=String(row.lastReview??row['最近一次复习日期']??'');
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(due)||lastReview&&!/^\d{4}-\d{2}-\d{2}$/.test(lastReview))throw Error(`第 ${index+1} 题的日期须为 YYYY-MM-DD`);
+  const realRaw=row.real??row['是否真题']??false;
+  const real=realRaw===true||realRaw===1||realRaw==='1'||realRaw==='是'||realRaw==='true';
+  const chapter=canonicalChapter(subject,String(row.chapter??row['所属章节']??'').trim());
+  return {id:uid(),sourceId:String(row.sourceId??''),sourceChapter:String(row.sourceChapter??''),subject,chapter,module:String(row.module??row.section??row['所属节']??'').trim(),title,importance,real,lastReview,due,mastery,framework:String(row.framework??row['标准答案/答题框架']??row['标准答案']??''),myAnswer:String(row.myAnswer??row['我的答案']??''),interval:Number(row.interval)||0,reps:Number(row.reps)||0};
+ });
+}
+function mergeQuestionRows(rows){
+ const key=q=>q.subject+'|'+q.title.trim().replace(/\s+/g,' ');
+ const seen=new Set(state.questions.map(key)),fresh=[];
+ rows.forEach(q=>{const k=key(q);if(!seen.has(k)){seen.add(k);fresh.push(q)}});
+ state.questions.push(...fresh);save();render();return {added:fresh.length,skipped:rows.length-fresh.length};
+}
+function questionCard(q){let due=q.due<=today();return `<article class="card qcard"><div class="qmeta">${q.sourceId?'<span class="badge">'+esc(q.sourceId)+'</span>':''}<span class="badge">${SHORT[q.subject]}</span>${esc(q.chapter)}${q.module?' · '+esc(q.module):''} · <span class="stars">${'★'.repeat(q.importance)}${'☆'.repeat(5-q.importance)}</span> ${q.real?'· 真题':''}</div><h3>${esc(q.title)}</h3><div class="qmeta">熟练度：${MASTERY[q.mastery]} · 上次：${q.lastReview?dateCN(q.lastReview):'尚未复习'} · 下次：${dateCN(q.due)} ${due?'· 今天到期':''}</div><div class="actions" style="margin-top:12px"><button class="btn sm soft" data-action="openQuestion" data-id="${q.id}">闭卷回忆 / 评分</button><button class="btn sm" data-action="editQuestion" data-id="${q.id}">编辑</button><button class="btn sm danger" data-action="deleteQuestion" data-id="${q.id}">删除</button></div><details><summary>查看我的答案与答题框架</summary><p class="sub">我的答案</p><div style="white-space:pre-wrap">${esc(q.myAnswer)||'尚未填写'}</div><p class="sub">标准答案 / 框架</p><div style="white-space:pre-wrap">${esc(q.framework)||'待补充'}</div></details></article>`}
+function renderBank(){let arr=state.questions.filter(q=>(qSubject==='all'||q.subject===qSubject)&&(qFilter==='all'||qFilter==='unknown'&&q.mastery<=1||qFilter==='high'&&q.importance>=4||qFilter==='real'&&q.real||qFilter==='due'&&q.due<=today()));arr.sort((a,b)=>b.importance-a.importance||a.due.localeCompare(b.due));let totals=Object.keys(SUBJECTS).map(s=>`${SHORT[s]} ${state.questions.filter(q=>q.subject===s).length} 道`).join(' · ');return `<section class="card section" style="margin-bottom:16px"><div class="sectionhead"><div><h2>题库目标：每科约 40—50 道核心大题</h2><p>当前收录：${totals}。内置 150 道来自你提供的清单，默认不标记为历年真题；你可以继续增补。</p></div><div class="actions"><button class="btn sm" data-action="importQuestions">导入题目 JSON</button><button class="btn sm" data-action="questionTemplate">下载示例 JSON</button><button class="btn primary sm" data-action="addQuestion">＋ 添加大题</button></div></div><div class="qfilters">${[['all','全部'],['unknown','只看不会'],['high','只看高频'],['real','只看真题'],['due','今天需复习']].map(([k,v])=>`<button class="btn sm ${qFilter===k?'active':''}" data-action="qFilter" data-filter="${k}">${v}</button>`).join('')}</div><div class="field" style="max-width:220px;margin:0"><label>科目</label><select id="qSubject">${[['all','全部科目'],...Object.entries(SUBJECTS)].map(([k,v])=>`<option value="${k}" ${qSubject===k?'selected':''}>${v}</option>`).join('')}</select></div></section><div>${arr.length?arr.map(questionCard).join(''):'<div class="empty">当前筛选没有题目。可以切换筛选或添加大题。</div>'}</div>`}
+function reviewForm(d){let r=state.reviews[d]||{};return `<div class="formrow"><div class="field"><label>今日 648 实际学习小时数</label><input id="reviewHours" type="number" min="0" max="24" step="0.25" value="${r.hours??''}" placeholder="例如 4.5"></div><div class="field"><label>今日学习状态</label><select id="reviewMood">${[0,1,2,3,4,5].map(n=>`<option value="${n}" ${(r.mood||0)===n?'selected':''}>${n?n+' 星':'请选择'}</option>`).join('')}</select></div></div><div class="field"><label>最薄弱的知识点</label><input id="reviewWeak" value="${esc(r.weak||'')}" placeholder="具体到机制或题目"></div><div class="field"><label>今天新掌握的知识点</label><input id="reviewGain" value="${esc(r.gain||'')}" placeholder="能脱离教材讲清楚什么"></div><div class="field"><label>明天重点解决</label><input id="reviewTomorrow" value="${esc(r.tomorrow||'')}" placeholder="一到两个可执行问题"></div><div class="row"><span class="sub">今天任务完成率：${taskCompletion(d)}%</span><button class="btn primary sm" data-action="saveReview" data-date="${d}">保存复盘</button></div>`}
+function renderChapterTrend(dates){return `<section class="card section" style="margin-top:17px"><h2>最近 7 天三科进度</h2><p class="sub">根据每天保存的章节状态变化显示。</p><div style="overflow:auto"><table style="width:100%;border-collapse:collapse;min-width:460px;text-align:left"><thead><tr><th>日期</th><th>生理</th><th>生化</th><th>细胞</th></tr></thead><tbody>${dates.map(d=>`<tr style="border-top:1px solid var(--line)"><td style="padding:9px 0">${d.slice(5)}</td>${['phys','bio','cell'].map(s=>`<td>${chapterProgressOn(d,s)}%</td>`).join('')}</tr>`).join('')}</tbody></table></div></section>`}
+function renderStats(){let dates=Array.from({length:7},(_,i)=>addDays(today(),i-6)),maxHours=Math.max(5,...dates.map(d=>Number(state.reviews[d]?.hours||0)));return `<div class="grid cols"><section class="card section"><h2>最近 7 天</h2><p class="sub">学习时间来自每日复盘；完成率来自任务勾选。</p><div class="chart">${dates.map(d=>{let h=Number(state.reviews[d]?.hours||0),c=taskCompletion(d);return `<div class="chartcol"><div class="chartbars"><div class="bar" title="${dateCN(d)} 学习 ${h} 小时" style="height:${h/maxHours*100}%"></div><div class="bar alt" title="${dateCN(d)} 完成 ${c}%" style="height:${c}%"></div></div><small>${d.slice(5)}</small></div>`}).join('')}</div><div class="legend"><span><i></i>学习小时</span><span><i class="alt"></i>完成率</span></div></section><section class="card section"><h2>三科掌握进度</h2><p class="sub">按当前各节状态折算，修改后立即更新。</p><div class="mini-list" style="margin-top:20px">${Object.keys(SUBJECTS).map(s=>`<div><div class="row"><strong>${SHORT[s]}</strong><span>${statusPercent(s)}%</span></div><div class="progress" style="margin-top:7px"><span style="width:${statusPercent(s)}%"></span></div></div>`).join('')}</div><div class="note" style="margin-top:20px">主观题复习进度：${state.questions.filter(q=>q.mastery>=2).length} / ${state.questions.length} 道达到“能口述”及以上。</div></section></div>${renderChapterTrend(dates)}<section class="card section" style="margin-top:17px"><div class="sectionhead"><div><h2>复盘记录</h2><p>近 7 天的薄弱点与下一步</p></div></div>${dates.slice().reverse().map(d=>{let r=state.reviews[d];return `<div class="mini-item" style="margin-bottom:8px"><strong>${dateCN(d)} · ${r?.hours??0} 小时 · 完成 ${taskCompletion(d)}% · ${r?.mood?'★'.repeat(r.mood):'未评分'}</strong><small>薄弱：${esc(r?.weak||'未记录')}　新掌握：${esc(r?.gain||'未记录')}　明日：${esc(r?.tomorrow||'未记录')}</small></div>`}).join('')}</section>`}
+function renderSettings(){return `<div class="grid cols"><section class="card section"><h2>规划参数</h2><p class="sub">默认复习截止到初试前一天；修改后可重新规划未来任务。</p><div class="formrow" style="margin-top:17px"><div class="field"><label>初试首日</label><input id="examDate" type="date" value="${state.settings.examDate}"></div><div class="field"><label>每天用于 648 的时间</label><select id="dailyHours">${[3,4,5,6,7,8].map(n=>`<option value="${n}" ${Number(state.settings.dailyHours)===n?'selected':''}>${n} 小时</option>`).join('')}</select></div></div><div class="actions"><button class="btn primary" data-action="replan">重新规划剩余时间</button><button class="btn" data-action="resize">仅调整未来任务时长</button></div><div class="note" style="margin-top:18px">重新规划会保留已完成和自建任务，重新安排未完成的模板任务；优先选取各节状态较低的内容。操作前建议导出备份。</div></section><section class="card section"><h2>数据与备份</h2><p class="sub">全部数据保存在此浏览器 localStorage。更换电脑请使用 JSON 导出/导入。</p><div class="actions" style="margin-top:18px"><button class="btn" data-action="export">导出 JSON</button><button class="btn" data-action="import">从 JSON 导入</button><button class="btn danger" data-action="reset">重置数据</button></div><p class="footer">导入会替换当前数据；重置会恢复初始计划和 150 题题库。</p></section></div><section class="card section" style="margin-top:17px"><h2>计划说明</h2><p>阶段 1（10/05—10/26）：细胞新学优先，生化建体系，生理快速二轮，每天闭卷输出。阶段 2（10/27—11/16）：三科问答化，日常 6—8 题口述与 2 题限时手写。阶段 3（11/17—12/07）：每周两次专题限时、一次 180 分钟模拟，次日错题回炉。阶段 4（12/08—考前）：高频大题循环，最后几天只看框架与错题。</p><p class="sub">初试日期依据教育部公布的 2027 年全国硕士研究生招生考试安排。648 科目范围采用你的要求；示例题仅供起步，不代替官方真题。</p><p class="footer"><a href="https://www.moe.gov.cn/srcsite/A15/moe_778/s3261/202609/t20260923_1451734.html" target="_blank" rel="noopener">教育部 2027 年研招规定</a> · <a href="https://graduate.sysu.edu.cn/zsw/article/541" target="_blank" rel="noopener">中山大学 2027 年招生章程</a></p></section>`}
+function modal(html){document.getElementById('modalRoot').innerHTML=`<div class="modalback" id="modalBack"><div class="modal" role="dialog" aria-modal="true">${html}</div></div>`}
+function closeModal(){document.getElementById('modalRoot').innerHTML=''}
+function findTask(id){for(const [date,list] of Object.entries(state.tasks)){let t=list.find(x=>x.id===id);if(t)return {t,date}}return null}
+function taskModal(id,date){let found=id?findTask(id):null,t=found?.t||newTask(date,'cell','',30,'复习',2);modal(`<div class="row"><h2>${id?'编辑':'添加'}任务</h2><button class="btn sm" data-action="closeModal">关闭</button></div><div class="field"><label>学习内容</label><input id="taskTitle" value="${esc(t.title)}" placeholder="例如：线粒体机制问答"></div><div class="formrow"><div class="field"><label>日期</label><input id="taskDate" type="date" value="${t.date}"></div><div class="field"><label>建议时间（分钟）</label><input id="taskMinutes" type="number" min="5" max="480" step="5" value="${t.minutes}"></div><div class="field"><label>科目</label><select id="taskSubject">${[['cell','细胞'],['bio','生化'],['phys','生理'],['output','主观输出'],['review','复盘'],['exam','模拟/训练']].map(([k,v])=>`<option value="${k}" ${t.subject===k?'selected':''}>${v}</option>`).join('')}</select></div><div class="field"><label>类型</label><select id="taskType">${['新学','复习','背诵','口述','手写','真题'].map(x=>`<option ${t.type===x?'selected':''}>${x}</option>`).join('')}</select></div><div class="field"><label>优先级</label><select id="taskPriority">${[[1,'高'],[2,'中'],[3,'常规']].map(([n,v])=>`<option value="${n}" ${t.priority===n?'selected':''}>${v}</option>`).join('')}</select></div></div><button class="btn primary" data-action="saveTask" data-id="${id||''}">保存任务</button>`)}
+function questionModal(id){let q=id?state.questions.find(x=>x.id===id):null;q ||= {subject:'cell',chapter:'',title:'',importance:3,real:false,framework:'',myAnswer:'',mastery:0};modal(`<div class="row"><h2>${id?'编辑':'添加'}大题</h2><button class="btn sm" data-action="closeModal">关闭</button></div><div class="field"><label>题目</label><input id="qTitle" value="${esc(q.title)}"></div><div class="formrow"><div class="field"><label>科目</label><select id="qSub">${Object.entries(SUBJECTS).map(([k,v])=>`<option value="${k}" ${q.subject===k?'selected':''}>${v}</option>`).join('')}</select></div><div class="field"><label>所属章节</label><input id="qChapter" list="qChapterList" value="${esc(q.chapter)}"><datalist id="qChapterList">${CHAPTERS[q.subject].map(n=>`<option value="${esc(n)}"></option>`).join('')}</datalist></div><div class="field"><label>关联节（可选）</label><input id="qModule" list="qModuleList" value="${esc(q.module||'')}" placeholder="与进度页节名称一致"><datalist id="qModuleList">${OUTLINE[q.subject].flatMap(([,a])=>a).map(n=>`<option value="${esc(n)}"></option>`).join('')}</datalist></div><div class="field"><label>重要程度</label><select id="qImportance">${[1,2,3,4,5].map(n=>`<option value="${n}" ${q.importance===n?'selected':''}>${'★'.repeat(n)}</option>`).join('')}</select></div><div class="field"><label>是否真题</label><select id="qReal"><option value="0" ${!q.real?'selected':''}>否</option><option value="1" ${q.real?'selected':''}>是</option></select></div><div class="field"><label>熟练度</label><select id="qMastery">${MASTERY.map((v,i)=>`<option value="${i}" ${q.mastery===i?'selected':''}>${v}</option>`).join('')}</select></div></div><div class="field"><label>我的答案</label><textarea id="qAnswer">${esc(q.myAnswer)}</textarea></div><div class="field"><label>标准答案 / 答题框架</label><textarea id="qFramework">${esc(q.framework)}</textarea></div><button class="btn primary" data-action="saveQuestion" data-id="${id||''}">保存大题</button>`)}
+function recallModal(id){let q=state.questions.find(x=>x.id===id);if(!q)return;modal(`<div class="row"><h2>闭卷回忆</h2><button class="btn sm" data-action="closeModal">关闭</button></div><p class="sub">${SHORT[q.subject]} · ${esc(q.chapter)}</p><h3>${esc(q.title)}</h3><p class="note">先脱离材料口述或手写，再展开框架自评。答案可在下方保存。</p><div class="field" style="margin-top:14px"><label>我的答案</label><textarea id="recallAnswer" style="min-height:150px" placeholder="按定义 / 背景 → 过程 → 核心机制 → 调控 → 意义书写">${esc(q.myAnswer)}</textarea></div><details><summary>看答题框架</summary><p style="white-space:pre-wrap">${esc(q.framework)||'暂无框架，请在题库编辑中补充。'}</p></details><div class="rating"><button class="btn sm" data-action="rate" data-id="${id}" data-grade="0">不会 · 明天</button><button class="btn sm" data-action="rate" data-id="${id}" data-grade="1">困难 · 2 天</button><button class="btn sm" data-action="rate" data-id="${id}" data-grade="2">一般 · 4 天</button><button class="btn sm primary" data-action="rate" data-id="${id}" data-grade="3">熟练 · 7 天</button></div>`)}
+function defer(date){let list=tasksOf(date).filter(t=>!t.done);if(!list.length)return;let days=[1,2,3].map(n=>addDays(date,n)).filter(d=>d<state.settings.examDate);if(!days.length){toast('考前没有可顺延的日期');return}list.sort((a,b)=>a.priority-b.priority||b.minutes-a.minutes);list.forEach((t,i)=>{state.tasks[date]=state.tasks[date].filter(x=>x.id!==t.id);let target=days.reduce((a,b)=>subjectTime(a)<=subjectTime(b)?a:b);t.date=target;t.origin ||=date;t.order=tasksOf(target).length;state.tasks[target] ||= [];state.tasks[target].push(t)});save();render();toast(`${list.length} 项任务已分散到之后 ${days.length} 天`)}
+function scheduleSectionReview(chapterId,sectionId){
+ const c=state.chapters[chapterId],m=c?.sections.find(x=>x.id===sectionId);if(!m)return;
+ Object.entries(state.tasks).forEach(([date,list])=>{if(date>=today())state.tasks[date]=list.filter(t=>t.sectionId!==sectionId||t.source!=='section-review'||t.done)});
+ if(m.status<1||m.status>=3)return;
+ const target=addDays(today(),1);if(target>=state.settings.examDate)return;
+ const q=state.questions.find(x=>x.subject===c.subject&&x.chapter===c.name&&x.module===m.name);
+ if(q)q.due=target;
+ const prompt=m.name==='溶酶体'?'试述溶酶体酶的合成与分选':q?.title||`说明${m.name}的结构、核心机制与医学意义`;
+ const t=newTask(target,c.subject,'闭卷口述：'+prompt,20,'口述',1,c.name);t.sectionId=sectionId;t.source='section-review';t.custom=true;t.order=tasksOf(target).length;state.tasks[target] ||= [];state.tasks[target].push(t);
+}
+function adaptiveReplan(){let from=today()<START?START:today(),to=endDate();if(to<from)return;let old=state.tasks,dates=[];for(let d=from;d<=to;d=addDays(d,1))dates.push(d);let pools={};Object.keys(CHAPTERS).forEach(sub=>{let list=Object.values(state.chapters).filter(c=>c.subject===sub&&!c.intro);pools[sub]=list.map(c=>({name:c.name,score:chapterPercent(c),section:c.sections.slice().sort((a,b)=>a.status-b.status)[0]})).sort((a,b)=>a.score-b.score||CHAPTERS[sub].indexOf(a.name)-CHAPTERS[sub].indexOf(b.name))});dates.forEach((d,di)=>{let kept=(old[d]||[]).filter(t=>t.done||t.custom||t.origin);let fresh=makeDay(state,d).filter(t=>!kept.some(k=>k.title===t.title&&k.subject===t.subject));fresh.forEach(t=>{if(['cell','bio','phys'].includes(t.subject)){let list=pools[t.subject],focus=list[(di+Math.floor(di/Math.max(1,list.length)))%list.length];t.chapter=focus.name;t.sectionId=focus.section?.id||null;t.title=t.title.replace(/：.*/, '：'+focus.name+(focus.section?' · '+focus.section.name:''))}});state.tasks[d]=[...kept,...fresh].map((t,i)=>({...t,order:i}))});save();render();toast('已根据薄弱小节重新规划剩余时间')}
+function resizeFuture(){let from=today()<START?START:today();for(let d=from;d<=endDate();d=addDays(d,1)){let all=tasksOf(d),doneMin=all.filter(t=>t.done).reduce((a,t)=>a+t.minutes,0),fixed=all.filter(t=>!t.done&&t.title.includes('全真模拟 180 分钟')),flex=all.filter(t=>!t.done&&!fixed.includes(t));let target=Math.max(0,Number(state.settings.dailyHours)*60-doneMin-fixed.reduce((a,t)=>a+t.minutes,0));if(fixed.length&&target<flex.length*10){state.tasks[d]=all.filter(t=>t.done||fixed.includes(t)||t.custom);continue}let sum=flex.reduce((a,t)=>a+t.minutes,0),ratio=sum?target/sum:1;flex.forEach(t=>t.minutes=Math.max(10,Math.round(t.minutes*ratio/5)*5))}save();render();toast('已调整未来未完成任务时长')}
+function saveSettingsInputs(){let d=document.getElementById('examDate')?.value,h=Number(document.getElementById('dailyHours')?.value);if(!d||d<=START){toast('考试日期需晚于计划开始日');return false}state.settings.examDate=d;state.settings.dailyHours=h;let end=addDays(d,-1);if(end>Object.keys(state.tasks).sort().at(-1))generatePlan(state,addDays(Object.keys(state.tasks).sort().at(-1),1),end,false);save();return true}
+document.addEventListener('click',e=>{let pageBtn=e.target.closest('[data-page]');if(pageBtn){setPage(pageBtn.dataset.page);return}let el=e.target.closest('[data-action]');if(!el)return;let a=el.dataset.action,id=el.dataset.id,d=el.dataset.date;
+ if(a==='closeModal'){closeModal();return}if(a==='selectDate'){selectedDate=d;render();return}if(a==='month'){let x=parseDate(calendarMonth+'-01');x.setMonth(x.getMonth()+Number(el.dataset.step));calendarMonth=iso(x).slice(0,7);render();return}
+ if(a==='addTask'||a==='editTask'){taskModal(a==='editTask'?id:null,d);return}if(a==='deleteTask'){if(!confirm('删除这项任务？'))return;state.tasks[d]=state.tasks[d].filter(t=>t.id!==id);save();render();return}
+ if(a==='saveTask'){let title=document.getElementById('taskTitle').value.trim(),date=document.getElementById('taskDate').value,min=Number(document.getElementById('taskMinutes').value);if(!title||!date||min<5){toast('请填写任务、日期和有效时长');return}let f=id?findTask(id):null,t=f?.t||newTask(date,'cell','',min,'复习',2);if(f)state.tasks[f.date]=state.tasks[f.date].filter(x=>x.id!==id);Object.assign(t,{title,date,minutes:min,subject:document.getElementById('taskSubject').value,type:document.getElementById('taskType').value,priority:Number(document.getElementById('taskPriority').value),custom:true,order:tasksOf(date).length});state.tasks[date] ||= [];state.tasks[date].push(t);save();closeModal();render();toast('任务已保存');return}
+ if(a==='defer'){defer(d);return}if(a==='addQuestion'||a==='editQuestion'){questionModal(a==='editQuestion'?id:null);return}if(a==='deleteQuestion'){if(!confirm('删除这道大题及其复习记录？'))return;state.questions=state.questions.filter(q=>q.id!==id);save();render();return}
+ if(a==='saveQuestion'){let title=document.getElementById('qTitle').value.trim();if(!title){toast('请填写题目');return}let q=id?state.questions.find(x=>x.id===id):null;if(!q){q={id:uid(),lastReview:'',due:today(),mastery:0,interval:0,reps:0};state.questions.push(q)}Object.assign(q,{title,subject:document.getElementById('qSub').value,chapter:document.getElementById('qChapter').value.trim(),module:document.getElementById('qModule').value.trim(),importance:Number(document.getElementById('qImportance').value),real:document.getElementById('qReal').value==='1',mastery:Number(document.getElementById('qMastery').value),myAnswer:document.getElementById('qAnswer').value,framework:document.getElementById('qFramework').value});save();closeModal();render();toast('大题已保存');return}
+ if(a==='openQuestion'){recallModal(id);return}if(a==='rate'){let q=state.questions.find(x=>x.id===id),grade=Number(el.dataset.grade);q.myAnswer=document.getElementById('recallAnswer').value;q.lastReview=today();q.reps=grade===0?0:(q.reps||0)+1;let base=[1,2,4,7][grade],factor=grade>=2?Math.min(3,1+Math.floor((q.reps-1)/3)):1;q.interval=base*factor;q.due=addDays(today(),q.interval);q.mastery=[0,1,2,4][grade];save();closeModal();render();toast(`下次复习：${dateCN(q.due)}`);return}
+ if(a==='qFilter'){qFilter=el.dataset.filter;render();return}if(a==='saveReview'){let hours=Number(document.getElementById('reviewHours').value),mood=Number(document.getElementById('reviewMood').value);if(hours<0||hours>24){toast('学习小时数需在 0—24 之间');return}state.reviews[d]={hours,mood,weak:document.getElementById('reviewWeak').value,gain:document.getElementById('reviewGain').value,tomorrow:document.getElementById('reviewTomorrow').value};save();render();toast('复盘已保存');return}
+ if(a==='replan'||a==='resize'){if(a==='replan'&&!confirm('重新规划会替换未来未完成的模板任务。已完成、自建和顺延任务会保留。继续？'))return;if(!saveSettingsInputs())return;if(a==='replan')adaptiveReplan();else resizeFuture();return}
+ if(a==='export'){let blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),link=document.createElement('a');link.href=url;link.download='648-学习数据-'+today()+'.json';link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);return}
+ if(a==='importQuestions'){document.getElementById('questionImportInput').click();return}
+ if(a==='questionTemplate'){let sample={questions:[{subject:'cell',chapter:'细胞的内膜系统与囊泡转运',module:'溶酶体',title:'试述溶酶体酶的合成与分选',importance:5,real:false,framework:'按合成、修饰、分选、转运和医学意义组织答案。'}]},blob=new Blob([JSON.stringify(sample,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),link=document.createElement('a');link.href=url;link.download='648-大题导入示例.json';link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);return}
+ if(a==='import'){document.getElementById('importInput').click();return}if(a==='reset'){if(confirm('重置会清除当前浏览器内的全部任务、复盘和题库记录。建议先导出备份。确定重置？')){state=initialState();save();render();toast('已恢复初始数据')}return}
 });
-</script><script>(function () {
-  'use strict';
+document.addEventListener('change',e=>{let el=e.target;if(el.dataset.action==='toggleTask'){let f=findTask(el.dataset.id);if(f){f.t.done=el.checked;save();render()}return}if(el.dataset.action==='sectionStatus'){let cid=el.dataset.chapter,m=state.chapters[cid]?.sections.find(x=>x.id===el.dataset.id);if(!m)return;m.status=Number(el.value);m.rough=false;openChapter=cid;scheduleSectionReview(cid,m.id);recordChapterProgress();save();render();return}if(el.id==='qSubject'){qSubject=el.value;render();return}});
+document.addEventListener('input',e=>{if(e.target.id==='dayNote'){state.notes[e.target.dataset.date]=e.target.value;save()}});
+document.getElementById('themeBtn').addEventListener('click',()=>{state.settings.theme=state.settings.theme==='dark'?'light':'dark';save();render()});
+document.getElementById('importInput').addEventListener('change',async e=>{let f=e.target.files[0];if(!f)return;try{let x=JSON.parse(await f.text());if(![1,2,3].includes(x.version)||!x.tasks||!x.questions||!x.chapters||!x.settings)throw Error('文件不是本网页导出的数据');if(!confirm('导入将替换当前浏览器中的全部数据。继续？'))return;state=x.version===1?migrateV1(x):x.version===2?migrateV2(x):x;state.reviews ||= {};state.notes ||= {};state.chapterHistory ||= [{date:today(),phys:20,bio:20,cell:0}];ensureQuestionPack(state);recordChapterProgress();save();render();toast('数据已导入')}catch(err){toast('导入失败：'+err.message)}finally{e.target.value=''}});
+document.getElementById('questionImportInput').addEventListener('change',async e=>{let f=e.target.files[0];if(!f)return;try{if(f.size>5*1024*1024)throw Error('文件超过 5 MB');const rows=parseQuestionJson(JSON.parse(await f.text())),result=mergeQuestionRows(rows);toast(`已导入 ${result.added} 道；跳过重复 ${result.skipped} 道`)}catch(err){toast('题目导入失败：'+err.message)}finally{e.target.value=''}});
+let dragged=null;document.addEventListener('dragstart',e=>{let t=e.target.closest('.task');if(!t)return;dragged={id:t.dataset.id,date:t.dataset.date};t.classList.add('dragging')});document.addEventListener('dragend',e=>{e.target.closest('.task')?.classList.remove('dragging');dragged=null});document.addEventListener('dragover',e=>{if(dragged&&e.target.closest('.task'))e.preventDefault()});document.addEventListener('drop',e=>{let target=e.target.closest('.task');if(!dragged||!target||target.dataset.date!==dragged.date)return;e.preventDefault();let arr=tasksOf(dragged.date),from=arr.findIndex(t=>t.id===dragged.id),to=arr.findIndex(t=>t.id===target.dataset.id);if(from<0||to<0)return;let [item]=arr.splice(from,1);arr.splice(to,0,item);arr.forEach((t,i)=>t.order=i);state.tasks[dragged.date]=arr;save();render()});
+recordChapterProgress();save();render();
+</script>
+</body>
+</html>
 
-  const STORAGE_KEY = "basicMedical697ProgressV2";
-  const SETTINGS_KEY = "basicMedical697SettingsV1";
-  const SESSION_KEY = "basicMedical697SessionV1";
-  const SUBJECT_SESSIONS_KEY = "basicMedical697SessionsBySubjectV1";
-  const HISTORY_KEY = "basicMedical697HistoryV1";
-  const quizData = window.QUIZ_DATA;
-  if (!quizData || !Array.isArray(quizData.questions) || !quizData.questions.length) {
-    document.body.innerHTML = '<main class="wrap"><section class="card"><h1>题库加载失败</h1><p>请确认 questions.js 与 index.html 位于同一文件夹，然后刷新页面。</p></section></main>';
-    throw new Error('QUIZ_DATA is missing or empty');
-  }
 
-  const questions = quizData.questions;
-  const byId = new Map(questions.map(q => [q.id, q]));
-  const dataVersion = String(quizData.version || 'unknown');
-  let progress = loadProgress();
-  let history = QuizHistory.loadHistory(localStorage.getItem(HISTORY_KEY));
-  let settings = QuizState.normalizeSettings(loadObject(SETTINGS_KEY), questions);
-  let activeSession = null;
-  let session = [];
-  let index = 0;
-  let answers = {};
-  let isMock = false;
-  let mockPoints = {};
-  let mockTotal = 0;
-  let analysisTab = "history";
-  let expandedRecordId = "";
 
-  function loadProgress() { try { const saved=JSON.parse(localStorage.getItem(STORAGE_KEY));return saved&&typeof saved==='object'&&!Array.isArray(saved)?saved:{} } catch { return {} } }
-  function loadObject(key) { try { const value = JSON.parse(localStorage.getItem(key)); return value && typeof value === 'object' && !Array.isArray(value) ? value : null } catch { return null } }
-  function store(key, value) { try { localStorage.setItem(key, JSON.stringify(value)); return true } catch { return false } }
-  function saveProgress() { store(STORAGE_KEY, progress) }
-  function saveSettings() { store(SETTINGS_KEY, settings) }
-  function saveHistory() { store(HISTORY_KEY, history) }
-  function saveSubjectSessions(sessions) { store(SUBJECT_SESSIONS_KEY, sessions) }
-  function loadSessionForSubject(subject) {
-    let sessions = QuizSessions.normalize(loadObject(SUBJECT_SESSIONS_KEY));
-    let raw = QuizSessions.loadForSubject(sessions, subject);
-    if (!raw) {
-      const legacy = QuizState.restoreSession(loadObject(SESSION_KEY), questions, dataVersion);
-      if (legacy && legacy.settings.subject === subject) {
-        sessions = QuizSessions.migrateLegacy(sessions, legacy);
-        saveSubjectSessions(sessions);
-        localStorage.removeItem(SESSION_KEY);
-        raw = QuizSessions.loadForSubject(sessions, subject);
-      }
-    }
-    return QuizState.restoreSession(raw, questions, dataVersion);
-  }
-  function removeSessionForSubject(subject) {
-    saveSubjectSessions(QuizSessions.removeForSubject(loadObject(SUBJECT_SESSIONS_KEY), subject));
-  }
-  function esc(value) { return String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])) }
-  function selectedValues(name) { return [...document.querySelectorAll(`input[name="${name}"]:checked`)].map(input => input.value) }
-  function subjectQuestions(subject = settings.subject) { return questions.filter(q => q.subject === subject) }
-  function chaptersForSubject(subject = settings.subject) { return [...new Set(subjectQuestions(subject).map(q => q.chapter))] }
 
-  function syncSettingsFromForm() {
-    settings = QuizState.normalizeSettings({
-      subject: settings.subject,
-      chapters: selectedValues('chapter'),
-      types: selectedValues('qtype'),
-      scope: document.getElementById('scope').value,
-      order: document.getElementById('order').value,
-      studyMode: document.getElementById('studyMode').value,
-      limit: Number(document.getElementById('limit').value),
-    }, questions);
-    saveSettings();
-    renderSetupStats();
-  }
 
-  function renderSetup() {
-    document.querySelectorAll('.subject-tab').forEach(button => button.classList.toggle('active', button.dataset.subject === settings.subject));
-    const counts = {};
-    subjectQuestions().forEach(q => { counts[q.chapter] = (counts[q.chapter] || 0) + 1 });
-    document.getElementById('chapters').innerHTML = chaptersForSubject().map(chapter =>
-      `<label class="check"><input type="checkbox" name="chapter" value="${esc(chapter)}" ${settings.chapters.includes(chapter) ? 'checked' : ''}> <span>${esc(chapter)} <small class="muted">(${counts[chapter] || 0})</small></span></label>`
-    ).join('');
-    document.querySelectorAll('input[name="qtype"]').forEach(input => { input.checked = settings.types.includes(input.value) });
-    document.getElementById('scope').value = settings.scope;
-    document.getElementById('order').value = settings.order;
-    document.getElementById('studyMode').value = settings.studyMode;
-    document.getElementById('limit').value = String(settings.limit);
-    document.querySelectorAll('input[name="chapter"]').forEach(input => input.addEventListener('change', syncSettingsFromForm));
-    renderSetupStats();
-    renderResumeButton();
-  }
 
-  function renderSetupStats() {
-    const qs = subjectQuestions();
-    const available = QuizState.filterQuestions(questions, settings, progress).length;
-    const key = qs.filter(q => q.outlineTag === '697重点').length;
-    const wrong = qs.filter(q => Number(progress[q.id]?.wrong) > 0).length;
-    const favorite = qs.filter(q => progress[q.id]?.favorite === true).length;
-    const notes = qs.filter(q => typeof progress[q.id]?.note === 'string' && progress[q.id].note.trim()).length;
-    document.getElementById('setupStats').innerHTML = `<span class="stat">当前可刷 ${available} 题</span><span class="stat">本学科 ${qs.length} 题</span><span class="stat">错题 ${wrong}</span><span class="stat">收藏 ${favorite}</span><span class="stat">笔记 ${notes}</span><span class="stat">697重点 ${key}</span>`;
-  }
 
-  function renderResumeButton() {
-    const restored = loadSessionForSubject(settings.subject);
-    const button = document.getElementById('resumeBtn');
-    button.classList.toggle('hidden', !restored);
-    if (restored) button.textContent = `继续上次未完成（${restored.index + 1}/${restored.questionIds.length}）`;
-  }
 
-  function createPool() {
-    const filtered = QuizState.filterQuestions(questions, settings, progress);
-    const ordered = QuizState.orderedQuestions(filtered, settings.order);
-    return settings.limit ? ordered.slice(0, settings.limit) : ordered;
-  }
 
-  function saveCompletedSession() {
-    if (!activeSession) return null;
-    const completedAt = Date.now();
-    const record = QuizHistory.buildRecord({
-      ...activeSession,
-      questionIds: session.map(q => q.id),
-      answers,
-      completedAt,
-      isMock,
-      mockPoints,
-      mockTotal,
-    }, byId);
-    history = QuizHistory.appendRecord(history, record);
-    saveHistory();
-    return record;
-  }
-
-  function formatDate(timestamp) {
-    const date = new Date(Number(timestamp) || Date.now());
-    return `${date.getFullYear()}/${String(date.getMonth() + 1).padStart(2, '0')}/${String(date.getDate()).padStart(2, '0')} ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
-  }
-
-  function formatDuration(seconds) {
-    const total = Math.max(0, Number(seconds) || 0);
-    const minutes = Math.floor(total / 60);
-    const remainder = total % 60;
-    return minutes ? `${minutes} 分 ${remainder} 秒` : `${remainder} 秒`;
-  }
-
-  function accuracyText(summary) {
-    return summary.accuracy == null ? '暂无可计分题' : `正确率 ${summary.accuracy}%`;
-  }
-
-  function donut(summary) {
-    const total = Math.max(1, Number(summary.total) || 0);
-    const correct = Math.round((summary.correct || 0) / total * 100);
-    const wrong = Math.round((summary.wrong || 0) / total * 100);
-    const partial = Math.round((summary.partial || 0) / total * 100);
-    return `<div class="donut" style="--correct:${correct}%;--wrong:${wrong}%;--partial:${partial}%"><div class="donut-label">${summary.accuracy == null ? '暂无\n计分' : `${summary.accuracy}%\n正确率`}</div></div>`;
-  }
-
-  function summaryMetrics(summary) {
-    return `<div class="analysis-metrics"><span class="analysis-metric good">正确 ${summary.correct}</span><span class="analysis-metric bad">错误 ${summary.wrong}</span><span class="analysis-metric partial">部分掌握 ${summary.partial}</span><span class="analysis-metric">暂不计分 ${summary.ungraded}</span></div>`;
-  }
-
-  function mastery(summary) {
-    if ((summary.scored || 0) < 5) return { label: '数据不足', className: '' };
-    if (summary.accuracy < 60) return { label: '薄弱', className: 'weak' };
-    if (summary.accuracy < 80) return { label: '需巩固', className: 'revise' };
-    return { label: '掌握', className: 'good' };
-  }
-
-  function renderHistory() {
-    const target = document.getElementById('historyList');
-    const sessions = history.sessions || [];
-    if (!sessions.length) {
-      target.innerHTML = '<div class="empty-analysis"><b>还没有正式刷题记录</b><br>从本次更新后完成一轮刷题，记录会显示在这里。</div>';
-      return;
-    }
-    target.innerHTML = sessions.map(record => {
-      const summary = record.summary || QuizHistory.summarize(record.results || []);
-      const chapters = (record.settings?.chapters || []).length ? record.settings.chapters.join('、') : '所选章节';
-      const wrongIds = (record.results || []).filter(item => item.outcome === 'wrong').map(item => item.questionId).slice(0, 20);
-      return `<details class="record-card" ${record.id === expandedRecordId ? 'open' : ''}><summary><div class="record-title"><div><b>${esc(record.isMock ? '697 综合模拟' : `${record.settings?.subject || '刷题记录'} · ${chapters}`)}</b><div class="muted">${esc(formatDate(record.completedAt))} · 完成 ${summary.answered}/${summary.total} 题 · 用时 ${esc(formatDuration(record.durationSeconds))}</div></div><span class="accuracy ${summary.accuracy == null ? 'muted-score' : ''}">${esc(accuracyText(summary))}</span></div>${summaryMetrics(summary)}</summary><div class="analysis-detail">${donut(summary)}<div><b>${record.isMock ? `模拟得分 ${Math.round((record.results || []).reduce((sum, item) => sum + (Number(item.points) || 0), 0))}/${record.mockTotal || 0}` : '本次作答分布'}</b>${summaryMetrics(summary)}<div class="muted">本次涉及：${esc([...new Set((record.results || []).map(item => item.chapter).filter(Boolean))].join('、') || '暂无章节信息')}</div>${wrongIds.length ? `<div class="notice" style="margin-top:10px">本次错误题 ${summary.wrong} 道：${esc(wrongIds.join('、'))}${summary.wrong > wrongIds.length ? '……' : ''}</div>` : ''}</div></div></details>`;
-    }).join('');
-  }
-
-  function renderSubjectOverview() {
-    const target = document.getElementById('subjectOverview');
-    const overview = QuizHistory.aggregateBySubject(history.sessions || []);
-    if (!overview.length) {
-      target.innerHTML = '<div class="empty-analysis"><b>暂无科目分析</b><br>完成新的一轮刷题后，会按科目和章节累积掌握数据。</div>';
-      return;
-    }
-    target.innerHTML = overview.map(item => {
-      const mark = mastery(item.summary);
-      return `<details class="subject-card" open><summary><div class="record-title"><div><b>${esc(item.subject)}</b><div class="muted">累计 ${item.sessionCount} 次 · 最近完成：${esc(formatDate(item.completedAt))} · 可计分 ${item.summary.scored} 题</div></div><div><span class="mastery ${mark.className}">${mark.label}</span><span class="accuracy ${item.summary.accuracy == null ? 'muted-score' : ''}">${esc(accuracyText(item.summary))}</span></div></div>${summaryMetrics(item.summary)}</summary><div class="analysis-detail">${donut(item.summary)}<div>${item.chapters.map(chapter => { const chapterMark = mastery(chapter.summary); const width = chapter.summary.accuracy == null ? 0 : chapter.summary.accuracy; return `<div class="chapter-row"><div><b>${esc(chapter.chapter)}</b><div class="muted">累计 ${chapter.sessionCount} 次 · 可计分 ${chapter.summary.scored} 题 · 部分掌握 ${chapter.summary.partial} · 最近 ${esc(formatDate(chapter.completedAt))}</div><div class="mini-bar"><i style="width:${width}%"></i></div></div><div><span class="mastery ${chapterMark.className}">${chapterMark.label}</span><div class="accuracy ${chapter.summary.accuracy == null ? 'muted-score' : ''}">${chapter.summary.accuracy == null ? '—' : `${chapter.summary.accuracy}%`}</div></div></div>`; }).join('')}</div></div></details>`;
-    }).join('');
-  }
-
-  function showAnalysis(recordId = '') {
-    expandedRecordId = recordId;
-    document.getElementById('setup').classList.add('hidden');
-    document.getElementById('quiz').classList.add('hidden');
-    document.getElementById('completion').classList.add('hidden');
-    document.getElementById('analysis').classList.remove('hidden');
-    renderHistory();
-    renderSubjectOverview();
-    setAnalysisTab(analysisTab);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
-  function setAnalysisTab(tab) {
-    analysisTab = tab === 'overview' ? 'overview' : 'history';
-    document.getElementById('historyTab').classList.toggle('active', analysisTab === 'history');
-    document.getElementById('historyTab').classList.toggle('alt', analysisTab !== 'history');
-    document.getElementById('overviewTab').classList.toggle('active', analysisTab === 'overview');
-    document.getElementById('overviewTab').classList.toggle('alt', analysisTab !== 'overview');
-    document.getElementById('historyView').classList.toggle('hidden', analysisTab !== 'history');
-    document.getElementById('overviewView').classList.toggle('hidden', analysisTab !== 'overview');
-  }
-
-  function showCompletion(record) {
-    const summary = record.summary || QuizHistory.summarize(record.results || []);
-    document.getElementById('quiz').classList.add('hidden');
-    document.getElementById('completion').classList.remove('hidden');
-    document.getElementById('completionSummary').textContent = `${record.isMock ? '模拟考试' : '本轮刷题'}：完成 ${summary.answered}/${summary.total} 题，${accuracyText(summary)}。`;
-    document.getElementById('viewCompletedAnalysis').dataset.recordId = record.id;
-  }
-
-  function startCurrent() {
-    syncSettingsFromForm();
-    const pool = createPool();
-    if (!pool.length) return alert('当前筛选条件下没有题目，请调整范围、章节或题型。');
-    activeSession = QuizState.createSession(pool.map(q => q.id), settings, { dataVersion });
-    activateSession(activeSession);
-  }
-
-  function resumeLast() {
-    const restored = loadSessionForSubject(settings.subject);
-    if (!restored) { renderResumeButton(); return alert('没有可以继续的未完成刷题记录。') }
-    activateSession(restored);
-  }
-
-  function activateSession(restored) {
-    activeSession = restored;
-    session = restored.questionIds.map(id => byId.get(id)).filter(Boolean);
-    index = restored.index;
-    answers = { ...restored.answers };
-    isMock = restored.isMock === true;
-    mockPoints = { ...(restored.mockPoints || {}) };
-    mockTotal = Number(restored.mockTotal) || 0;
-    settings = QuizState.normalizeSettings(restored.settings, questions);
-    saveSettings();
-    persistSession();
-    document.getElementById('setup').classList.add('hidden');
-    document.getElementById('quiz').classList.remove('hidden');
-    renderQuestion();
-  }
-
-  function persistSession() {
-    if (!activeSession) return;
-    activeSession = QuizState.updateSession(activeSession, {
-      questionIds: session.map(q => q.id), index, answers, settings,
-      isMock, mockPoints, mockTotal,
-    });
-    saveSubjectSessions(QuizSessions.save(loadObject(SUBJECT_SESSIONS_KEY), activeSession));
-  }
-
-  function take(pool, type, count) {
-    return QuizState.orderedQuestions(QuizState.mockEligibleQuestions(pool).filter(q => q.type === type), 'random').slice(0, count);
-  }
-
-  function startMock() {
-    const plan = [['选择题',50,1],['名词解释',20,5],['简答题',5,10],['问答题',5,20]];
-    const picked = [];
-    const points = {};
-    let total = 0;
-    const shortages = [];
-    for (const [type, count, score] of plan) {
-      const got = take(questions, type, count);
-      got.forEach(q => { picked.push(q); points[q.id] = score; total += score });
-      if (got.length < count) shortages.push(`${type} ${got.length}/${count}`);
-    }
-    if (shortages.length && !confirm(`部分题型不足：${shortages.join('，')}。是否按现有题目组卷？`)) return;
-    const mockSettings = { ...settings, studyMode: 'quiz', scope: 'all', order: 'random', limit: 0 };
-    const ordered = QuizState.orderedQuestions(picked, 'random');
-    activeSession = QuizState.createSession(ordered.map(q => q.id), mockSettings, { dataVersion, isMock: true, mockPoints: points, mockTotal: total });
-    activateSession(activeSession);
-  }
-
-  function currentQuestionProgress(q) { return QuizState.progressEntry(progress[q.id]) }
-
-  function renderQuestion() {
-    const q = session[index];
-    if (!q) return finishSession();
-    const state = answers[q.id] || {};
-    const itemProgress = currentQuestionProgress(q);
-    document.getElementById('counter').textContent = `${index + 1}/${session.length}（剩余${session.length - index - 1}题）`;
-    document.getElementById('bar').style.width = `${(index + 1) / session.length * 100}%`;
-    const done = Object.values(answers).filter(item => item.submitted).length;
-    const correct = Object.values(answers).filter(item => item.correct === true).length;
-    const earned = Object.values(answers).reduce((sum, item) => sum + (item.points || 0), 0);
-    document.getElementById('score').textContent = isMock ? `已作答 ${done} · 得分 ${earned}/${mockTotal}` : `已答 ${done} · 正确 ${correct}`;
-    const needsReview = q.structureStatus !== 'complete' || q.answerStatus !== 'available' || (q.reviewReasons || []).length > 0;
-    document.getElementById('tags').innerHTML = `<span class="tag">${esc(q.subject)}</span><span class="tag">${esc(q.chapter)}</span><span class="tag">${esc(q.type)}${q.choiceSubtype ? ` · ${esc(q.choiceSubtype)}` : ''}</span>${q.outlineTag === '697重点' ? '<span class="tag key">697重点</span>' : ''}${needsReview ? '<span class="tag">原题待核对 · 暂不判分</span>' : ''}`;
-    document.getElementById('stem').textContent = q.stem;
-    const favoriteButton = document.getElementById('favoriteBtn');
-    favoriteButton.textContent = itemProgress.favorite ? '★ 已收藏' : '☆ 收藏此题';
-    favoriteButton.classList.toggle('favorite', itemProgress.favorite);
-    const note = document.getElementById('questionNote');
-    note.value = itemProgress.note;
-    document.getElementById('noteState').textContent = itemProgress.note ? '已保存' : '';
-
-    const box = document.getElementById('options');
-    const written = document.getElementById('written');
-    const actions = document.getElementById('actions');
-    const feedback = document.getElementById('feedback');
-    feedback.className = 'feedback hidden';
-    feedback.innerHTML = '';
-    if (q.type === '选择题') {
-      written.classList.add('hidden');
-      const multi = (q.answer || '').replace(/[^A-E]/g, '').length > 1;
-      box.innerHTML = (q.options || []).map(option => `<label class="option ${(state.selected || []).includes(option.label) ? 'chosen' : ''}"><input type="${multi ? 'checkbox' : 'radio'}" name="choice" value="${option.label}" ${(state.selected || []).includes(option.label) ? 'checked' : ''} ${state.submitted ? 'disabled' : ''}> <b>${option.label}.</b> <span>${esc(option.text)}</span></label>`).join('') || '<div class="notice">原题选项未能完整恢复，可先查看题干；该题暂不判分。</div>';
-      box.querySelectorAll('input').forEach(input => { input.onchange = () => {
-        answers[q.id] = { ...state, selected: [...box.querySelectorAll('input:checked')].map(item => item.value) };
-        persistSession(); renderQuestion();
-      } });
-      actions.innerHTML = state.submitted ? '<button class="alt" id="showFeedback">查看答案与解析</button>' : `<button id="submitChoice">${needsReview ? '保存作答并查看题目状态' : '提交并查看答案'}</button>`;
-      if (state.submitted) showFeedback(q, state);
-      else document.getElementById('submitChoice').onclick = () => submitChoice(q);
-    } else {
-      box.innerHTML = '';
-      written.classList.remove('hidden');
-      written.value = state.text || '';
-      written.disabled = !!state.submitted;
-      written.oninput = () => { answers[q.id] = { ...answers[q.id], text: written.value }; persistSession() };
-      actions.innerHTML = state.submitted ? (!needsReview ? '<button data-rate="mastered">掌握</button><button class="alt" data-rate="partial">部分掌握</button><button class="alt" data-rate="unknown">不掌握</button>' : '<span class="notice">作答已保存在本机；本题核对前暂不判分。</span>') : '<button id="reveal">保存作答并查看参考要点</button>';
-      if (state.submitted) {
-        showFeedback(q, state);
-        actions.querySelectorAll('[data-rate]').forEach(button => { button.onclick = () => rateSubjective(q, button.dataset.rate) });
-      } else document.getElementById('reveal').onclick = () => revealSubjective(q);
-    }
-    if (settings.studyMode === 'study') showFeedback(q, state);
-    document.getElementById('prevBtn').disabled = index === 0;
-    document.getElementById('nextBtn').textContent = index === session.length - 1 ? '完成' : '下一题';
-    persistSession();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
-  function recordAttempt(q, correct) {
-    progress = QuizState.updateProgressEntry(progress, q.id, item => ({
-      ...item,
-      attempts: item.attempts + 1,
-      correct: item.correct + (correct === true ? 1 : 0),
-      wrong: item.wrong + (correct === false ? 1 : 0),
-      last: Date.now(),
-    }));
-    saveProgress();
-  }
-
-  function submitChoice(q) {
-    const selected = [...document.querySelectorAll('#options input:checked')].map(input => input.value).sort();
-    if (!selected.length) return alert('请先选择答案。');
-    const scorable = q.answerStatus === 'available' && q.structureStatus === 'complete' && !(q.reviewReasons || []).length;
-    const correctSet = [...new Set((q.answer || '').match(/[A-E]/g) || [])].sort();
-    const correct = scorable ? selected.join('') === correctSet.join('') : null;
-    answers[q.id] = { ...answers[q.id], selected, submitted: true, correct, points: isMock && correct ? (mockPoints[q.id] || 0) : 0 };
-    recordAttempt(q, correct);
-    persistSession(); renderQuestion();
-  }
-
-  function revealSubjective(q) {
-    const text = document.getElementById('written').value;
-    answers[q.id] = { ...answers[q.id], text, submitted: true, correct: null };
-    recordAttempt(q, null);
-    persistSession(); renderQuestion();
-  }
-
-  function rateSubjective(q, rate) {
-    const state = answers[q.id] || {};
-    const oldRate = state.rate;
-    progress = QuizState.updateProgressEntry(progress, q.id, item => {
-      let correct = item.correct;
-      let wrong = item.wrong;
-      if (oldRate === 'mastered') correct = Math.max(0, correct - 1);
-      if (oldRate === 'unknown') wrong = Math.max(0, wrong - 1);
-      if (rate === 'mastered') correct += 1;
-      if (rate === 'unknown') wrong += 1;
-      return { ...item, correct, wrong, mastery: rate, last: Date.now() };
-    });
-    answers[q.id] = { ...state, rate, correct: rate === 'mastered', points: isMock ? (rate === 'mastered' ? (mockPoints[q.id] || 0) : rate === 'partial' ? (mockPoints[q.id] || 0) / 2 : 0) : 0 };
-    saveProgress(); persistSession(); renderQuestion();
-  }
-
-  function showFeedback(q, state) {
-    const feedback = document.getElementById('feedback');
-    const scorable = q.answerStatus === 'available' && q.structureStatus === 'complete' && !(q.reviewReasons || []).length;
-    feedback.className = 'feedback' + (q.type === '选择题' && scorable && state.correct === false ? ' bad' : '');
-    const analysis = q.analysis || {};
-    const optionAnalysis = analysis.options || {};
-    const notices = [];
-    if (q.structureStatus !== 'complete') notices.push('原题选项未完整恢复，本题暂不判分。');
-    if (q.answerStatus !== 'available') notices.push('原题库未附答案，暂不判分。');
-    if ((q.reviewReasons || []).length) notices.push('本题仍在待查原题清单中，核对前暂不判分。');
-    if (q.analysisStatus !== 'available') notices.push('解析待后续补充。');
-    if (analysis.referenceStatus === 'needs-review') notices.push('现有答案或解析仍需人工复核。');
-    const status = notices.length ? `<div class="notice">${notices.map(esc).join('<br>')}</div>` : analysis.optionRationalesComplete === false ? '<div class="notice">原书提供了整题解析，但没有逐字覆盖全部 A–E 选项；逐项区按原书判别依据与答案键说明。</div>' : '';
-    const optionHtml = q.type === '选择题' && q.analysisStatus === 'available' ? (q.options || []).map(option => `<div class="rationale"><b>${option.label}. ${esc(option.text)}</b><br>${esc(optionAnalysis[option.label] || '该选项的专项解析待后续补充。')}</div>`).join('') : '';
-    feedback.innerHTML = `${status}<h3>参考答案</h3><div class="answer">${esc(q.answerStatus === 'available' ? (q.answer || '待核对') : '原题库未附答案，暂不判分')}</div><h3>解析</h3><div>${esc(analysis.summary || '解析待后续补充')}</div>${optionHtml ? `<h3>逐项分析</h3>${optionHtml}` : ''}<h3>解题思路</h3><div>${esc(q.solutionApproach || '解题思路待后续补充')}</div><h3>解题技巧</h3><div>${esc(q.tips || '解题技巧待后续补充')}</div>`;
-    feedback.classList.remove('hidden');
-  }
-
-  function move(delta) {
-    if (delta > 0 && index === session.length - 1) return finishSession();
-    index = Math.max(0, Math.min(session.length - 1, index + delta));
-    persistSession(); renderQuestion();
-  }
-
-  function finishSession() {
-    if (activeSession) {
-      activeSession = QuizState.completeSession(activeSession);
-      removeSessionForSubject(activeSession.settings.subject);
-    }
-    const record = saveCompletedSession();
-    if (!record) return backToSetup();
-    showCompletion(record);
-  }
-
-  function backToSetup() {
-    document.getElementById('quiz').classList.add('hidden');
-    document.getElementById('analysis').classList.add('hidden');
-    document.getElementById('completion').classList.add('hidden');
-    document.getElementById('setup').classList.remove('hidden');
-    renderSetup();
-  }
-
-  document.querySelectorAll('.subject-tab').forEach(button => { button.onclick = () => {
-    const chapters = button.dataset.subject === settings.subject ? settings.chapters : ['__all_for_new_subject__'];
-    settings = QuizState.normalizeSettings({ ...settings, subject: button.dataset.subject, chapters }, questions);
-    saveSettings(); renderSetup();
-  } });
-  document.querySelectorAll('input[name="qtype"],#scope,#order,#studyMode,#limit').forEach(input => input.addEventListener('change', syncSettingsFromForm));
-  document.getElementById('toggleChapters').onclick = event => {
-    const inputs = [...document.querySelectorAll('input[name="chapter"]')];
-    const all = inputs.every(input => input.checked);
-    inputs.forEach(input => { input.checked = !all });
-    event.target.textContent = all ? '全选' : '全不选';
-    syncSettingsFromForm();
-  };
-  document.getElementById('startBtn').onclick = startCurrent;
-  document.getElementById('resumeBtn').onclick = resumeLast;
-  document.getElementById('mockBtn').onclick = startMock;
-  document.getElementById('analysisBtn').onclick = () => showAnalysis();
-  document.getElementById('analysisBack').onclick = backToSetup;
-  document.getElementById('completionBack').onclick = backToSetup;
-  document.getElementById('viewCompletedAnalysis').onclick = event => showAnalysis(event.currentTarget.dataset.recordId || '');
-  document.getElementById('historyTab').onclick = () => setAnalysisTab('history');
-  document.getElementById('overviewTab').onclick = () => setAnalysisTab('overview');
-  document.getElementById('clearHistoryBtn').onclick = () => {
-    if (!confirm('仅清除正式刷题分析记录；错题、收藏、笔记、筛选和未完成进度都会保留。确定清除吗？')) return;
-    history = { version: QuizHistory.HISTORY_VERSION, sessions: [] };
-    saveHistory();
-    renderHistory();
-    renderSubjectOverview();
-  };
-  document.getElementById('resetBtn').onclick = () => {
-    if (!confirm('确定清除本机的做题记录、收藏、笔记、筛选和未完成进度吗？')) return;
-    [STORAGE_KEY, SETTINGS_KEY, SESSION_KEY, SUBJECT_SESSIONS_KEY].forEach(key => localStorage.removeItem(key));
-    progress = {};
-    settings = QuizState.normalizeSettings(null, questions);
-    activeSession = null;
-    renderSetup();
-    alert('本机记录已清除。');
-  };
-  document.getElementById('favoriteBtn').onclick = () => {
-    const q = session[index];
-    progress = QuizState.toggleFavorite(progress, q.id);
-    saveProgress(); renderQuestion();
-  };
-  document.getElementById('questionNote').oninput = event => {
-    const q = session[index];
-    progress = QuizState.setNote(progress, q.id, event.target.value);
-    saveProgress();
-    document.getElementById('noteState').textContent = progress[q.id].note ? '已保存' : '';
-  };
-  document.getElementById('prevBtn').onclick = () => move(-1);
-  document.getElementById('nextBtn').onclick = () => move(1);
-  document.getElementById('backBtn').onclick = backToSetup;
-  renderSetup();
-})();
-</script></body></html>
